@@ -16,6 +16,8 @@ import (
 )
 
 var regs = make([]int, 26)
+var arrayMap = make(map[int][]int)
+var tmp = []int{}
 var base int
 
 %}
@@ -28,7 +30,7 @@ var base int
 
 // any non-terminal which returns a value needs a type, which is
 // really a field name in the above union struct
-%type <val> expr number
+%type <val> expr number plenty
 
 // same for terminals
 %token <val> DIGIT LETTER
@@ -42,17 +44,18 @@ var base int
 %%
 
 list	: /* empty */
-	| list stat '\n'
+	| stat '\n'
 	;
 
 stat	:    expr
-		{
-			fmt.Printf( "%d\n", $1 );
-		}
 	|    LETTER '=' expr
 		{
 			regs[$1]  =  $3
 		}
+	|    LETTER '=' array
+        	{
+        		arrayMap[$1]  =  tmp
+        	}
 	;
 
 expr	:    '(' expr ')'
@@ -74,10 +77,22 @@ expr	:    '(' expr ')'
 	|    '-'  expr        %prec  UMINUS
 		{ $$  = -$2  }
 	|    LETTER
-		{ $$  = regs[$1] }
+		{ fmt.Println(regs[$1]) }
+	|    '[' LETTER ']'
+                { fmt.Println(arrayMap[$2]) }
 	|    number
 	;
 
+// array : assemble to array
+array	:    '[' plenty ']'
+
+// plenty : a plenty of numbers
+plenty	:    plenty ',' number
+		{ tmp = append(tmp, $3) }
+	|    number ',' number
+		{ tmp = append(tmp, $1, $3) }
+
+// number
 number	:    DIGIT
 		{
 			$$ = $1;

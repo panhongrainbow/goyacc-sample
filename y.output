@@ -3,29 +3,29 @@ state 0
 	$accept: .list $end 
 	list: .    (1)
 
-	.  reduce 1 (src line 44)
-
-	list  goto 1
-
-state 1
-	$accept:  list.$end 
-	list:  list.stat '\n' 
-
-	$end  accept
-	DIGIT  shift 8
+	DIGIT  shift 9
 	LETTER  shift 4
 	'-'  shift 6
 	'('  shift 5
-	.  error
+	'['  shift 7
+	.  reduce 1 (src line 46)
 
 	expr  goto 3
-	number  goto 7
+	number  goto 8
+	list  goto 1
 	stat  goto 2
 
-state 2
-	list:  list stat.'\n' 
+state 1
+	$accept:  list.$end 
 
-	'\n'  shift 9
+	$end  accept
+	.  error
+
+
+state 2
+	list:  stat.'\n' 
+
+	'\n'  shift 10
 	.  error
 
 
@@ -39,165 +39,185 @@ state 3
 	expr:  expr.'&' expr 
 	expr:  expr.'|' expr 
 
-	'|'  shift 16
-	'&'  shift 15
-	'+'  shift 10
-	'-'  shift 11
-	'*'  shift 12
-	'/'  shift 13
-	'%'  shift 14
-	.  reduce 3 (src line 48)
+	'|'  shift 17
+	'&'  shift 16
+	'+'  shift 11
+	'-'  shift 12
+	'*'  shift 13
+	'/'  shift 14
+	'%'  shift 15
+	.  reduce 3 (src line 50)
 
 
 state 4
 	stat:  LETTER.'=' expr 
-	expr:  LETTER.    (14)
+	stat:  LETTER.'=' array 
+	expr:  LETTER.    (15)
 
-	'='  shift 17
-	.  reduce 14 (src line 76)
+	'='  shift 18
+	.  reduce 15 (src line 79)
 
 
 state 5
 	expr:  '('.expr ')' 
 
-	DIGIT  shift 8
-	LETTER  shift 19
+	DIGIT  shift 9
+	LETTER  shift 20
 	'-'  shift 6
 	'('  shift 5
+	'['  shift 7
 	.  error
 
-	expr  goto 18
-	number  goto 7
+	expr  goto 19
+	number  goto 8
 
 state 6
 	expr:  '-'.expr 
 
-	DIGIT  shift 8
-	LETTER  shift 19
+	DIGIT  shift 9
+	LETTER  shift 20
 	'-'  shift 6
 	'('  shift 5
+	'['  shift 7
 	.  error
 
-	expr  goto 20
-	number  goto 7
+	expr  goto 21
+	number  goto 8
 
 state 7
-	expr:  number.    (15)
-	number:  number.DIGIT 
+	expr:  '['.LETTER ']' 
 
-	DIGIT  shift 21
-	.  reduce 15 (src line 78)
+	LETTER  shift 22
+	.  error
 
 
 state 8
-	number:  DIGIT.    (16)
+	expr:  number.    (17)
+	number:  number.DIGIT 
 
-	.  reduce 16 (src line 81)
+	DIGIT  shift 23
+	.  reduce 17 (src line 83)
 
 
 state 9
-	list:  list stat '\n'.    (2)
+	number:  DIGIT.    (21)
 
-	.  reduce 2 (src line 45)
+	.  reduce 21 (src line 96)
 
 
 state 10
-	expr:  expr '+'.expr 
+	list:  stat '\n'.    (2)
 
-	DIGIT  shift 8
-	LETTER  shift 19
-	'-'  shift 6
-	'('  shift 5
-	.  error
+	.  reduce 2 (src line 47)
 
-	expr  goto 22
-	number  goto 7
 
 state 11
-	expr:  expr '-'.expr 
+	expr:  expr '+'.expr 
 
-	DIGIT  shift 8
-	LETTER  shift 19
+	DIGIT  shift 9
+	LETTER  shift 20
 	'-'  shift 6
 	'('  shift 5
-	.  error
-
-	expr  goto 23
-	number  goto 7
-
-state 12
-	expr:  expr '*'.expr 
-
-	DIGIT  shift 8
-	LETTER  shift 19
-	'-'  shift 6
-	'('  shift 5
+	'['  shift 7
 	.  error
 
 	expr  goto 24
-	number  goto 7
+	number  goto 8
 
-state 13
-	expr:  expr '/'.expr 
+state 12
+	expr:  expr '-'.expr 
 
-	DIGIT  shift 8
-	LETTER  shift 19
+	DIGIT  shift 9
+	LETTER  shift 20
 	'-'  shift 6
 	'('  shift 5
+	'['  shift 7
 	.  error
 
 	expr  goto 25
-	number  goto 7
+	number  goto 8
 
-state 14
-	expr:  expr '%'.expr 
+state 13
+	expr:  expr '*'.expr 
 
-	DIGIT  shift 8
-	LETTER  shift 19
+	DIGIT  shift 9
+	LETTER  shift 20
 	'-'  shift 6
 	'('  shift 5
+	'['  shift 7
 	.  error
 
 	expr  goto 26
-	number  goto 7
+	number  goto 8
 
-state 15
-	expr:  expr '&'.expr 
+state 14
+	expr:  expr '/'.expr 
 
-	DIGIT  shift 8
-	LETTER  shift 19
+	DIGIT  shift 9
+	LETTER  shift 20
 	'-'  shift 6
 	'('  shift 5
+	'['  shift 7
 	.  error
 
 	expr  goto 27
-	number  goto 7
+	number  goto 8
 
-state 16
-	expr:  expr '|'.expr 
+state 15
+	expr:  expr '%'.expr 
 
-	DIGIT  shift 8
-	LETTER  shift 19
+	DIGIT  shift 9
+	LETTER  shift 20
 	'-'  shift 6
 	'('  shift 5
+	'['  shift 7
 	.  error
 
 	expr  goto 28
-	number  goto 7
+	number  goto 8
 
-state 17
-	stat:  LETTER '='.expr 
+state 16
+	expr:  expr '&'.expr 
 
-	DIGIT  shift 8
-	LETTER  shift 19
+	DIGIT  shift 9
+	LETTER  shift 20
 	'-'  shift 6
 	'('  shift 5
+	'['  shift 7
 	.  error
 
 	expr  goto 29
-	number  goto 7
+	number  goto 8
+
+state 17
+	expr:  expr '|'.expr 
+
+	DIGIT  shift 9
+	LETTER  shift 20
+	'-'  shift 6
+	'('  shift 5
+	'['  shift 7
+	.  error
+
+	expr  goto 30
+	number  goto 8
 
 state 18
+	stat:  LETTER '='.expr 
+	stat:  LETTER '='.array 
+
+	DIGIT  shift 9
+	LETTER  shift 20
+	'-'  shift 6
+	'('  shift 5
+	'['  shift 33
+	.  error
+
+	expr  goto 31
+	number  goto 8
+	array  goto 32
+
+state 19
 	expr:  '(' expr.')' 
 	expr:  expr.'+' expr 
 	expr:  expr.'-' expr 
@@ -207,111 +227,92 @@ state 18
 	expr:  expr.'&' expr 
 	expr:  expr.'|' expr 
 
-	'|'  shift 16
-	'&'  shift 15
-	'+'  shift 10
-	'-'  shift 11
-	'*'  shift 12
-	'/'  shift 13
-	'%'  shift 14
-	')'  shift 30
+	'|'  shift 17
+	'&'  shift 16
+	'+'  shift 11
+	'-'  shift 12
+	'*'  shift 13
+	'/'  shift 14
+	'%'  shift 15
+	')'  shift 34
 	.  error
 
 
-state 19
-	expr:  LETTER.    (14)
-
-	.  reduce 14 (src line 76)
-
-
 state 20
-	expr:  expr.'+' expr 
-	expr:  expr.'-' expr 
-	expr:  expr.'*' expr 
-	expr:  expr.'/' expr 
-	expr:  expr.'%' expr 
-	expr:  expr.'&' expr 
-	expr:  expr.'|' expr 
-	expr:  '-' expr.    (13)
+	expr:  LETTER.    (15)
 
-	.  reduce 13 (src line 74)
+	.  reduce 15 (src line 79)
 
 
 state 21
-	number:  number DIGIT.    (17)
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.'|' expr 
+	expr:  '-' expr.    (14)
 
-	.  reduce 17 (src line 90)
+	.  reduce 14 (src line 77)
 
 
 state 22
-	expr:  expr.'+' expr 
-	expr:  expr '+' expr.    (6)
-	expr:  expr.'-' expr 
-	expr:  expr.'*' expr 
-	expr:  expr.'/' expr 
-	expr:  expr.'%' expr 
-	expr:  expr.'&' expr 
-	expr:  expr.'|' expr 
+	expr:  '[' LETTER.']' 
 
-	'*'  shift 12
-	'/'  shift 13
-	'%'  shift 14
-	.  reduce 6 (src line 60)
+	']'  shift 35
+	.  error
 
 
 state 23
-	expr:  expr.'+' expr 
-	expr:  expr.'-' expr 
-	expr:  expr '-' expr.    (7)
-	expr:  expr.'*' expr 
-	expr:  expr.'/' expr 
-	expr:  expr.'%' expr 
-	expr:  expr.'&' expr 
-	expr:  expr.'|' expr 
+	number:  number DIGIT.    (22)
 
-	'*'  shift 12
-	'/'  shift 13
-	'%'  shift 14
-	.  reduce 7 (src line 62)
+	.  reduce 22 (src line 105)
 
 
 state 24
 	expr:  expr.'+' expr 
+	expr:  expr '+' expr.    (7)
 	expr:  expr.'-' expr 
 	expr:  expr.'*' expr 
-	expr:  expr '*' expr.    (8)
 	expr:  expr.'/' expr 
 	expr:  expr.'%' expr 
 	expr:  expr.'&' expr 
 	expr:  expr.'|' expr 
 
-	.  reduce 8 (src line 64)
+	'*'  shift 13
+	'/'  shift 14
+	'%'  shift 15
+	.  reduce 7 (src line 63)
 
 
 state 25
 	expr:  expr.'+' expr 
 	expr:  expr.'-' expr 
+	expr:  expr '-' expr.    (8)
 	expr:  expr.'*' expr 
 	expr:  expr.'/' expr 
-	expr:  expr '/' expr.    (9)
 	expr:  expr.'%' expr 
 	expr:  expr.'&' expr 
 	expr:  expr.'|' expr 
 
-	.  reduce 9 (src line 66)
+	'*'  shift 13
+	'/'  shift 14
+	'%'  shift 15
+	.  reduce 8 (src line 65)
 
 
 state 26
 	expr:  expr.'+' expr 
 	expr:  expr.'-' expr 
 	expr:  expr.'*' expr 
+	expr:  expr '*' expr.    (9)
 	expr:  expr.'/' expr 
 	expr:  expr.'%' expr 
-	expr:  expr '%' expr.    (10)
 	expr:  expr.'&' expr 
 	expr:  expr.'|' expr 
 
-	.  reduce 10 (src line 68)
+	.  reduce 9 (src line 67)
 
 
 state 27
@@ -319,17 +320,12 @@ state 27
 	expr:  expr.'-' expr 
 	expr:  expr.'*' expr 
 	expr:  expr.'/' expr 
+	expr:  expr '/' expr.    (10)
 	expr:  expr.'%' expr 
 	expr:  expr.'&' expr 
-	expr:  expr '&' expr.    (11)
 	expr:  expr.'|' expr 
 
-	'+'  shift 10
-	'-'  shift 11
-	'*'  shift 12
-	'/'  shift 13
-	'%'  shift 14
-	.  reduce 11 (src line 70)
+	.  reduce 10 (src line 69)
 
 
 state 28
@@ -338,20 +334,51 @@ state 28
 	expr:  expr.'*' expr 
 	expr:  expr.'/' expr 
 	expr:  expr.'%' expr 
+	expr:  expr '%' expr.    (11)
 	expr:  expr.'&' expr 
 	expr:  expr.'|' expr 
-	expr:  expr '|' expr.    (12)
 
-	'&'  shift 15
-	'+'  shift 10
-	'-'  shift 11
-	'*'  shift 12
-	'/'  shift 13
-	'%'  shift 14
-	.  reduce 12 (src line 72)
+	.  reduce 11 (src line 71)
 
 
 state 29
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'&' expr 
+	expr:  expr '&' expr.    (12)
+	expr:  expr.'|' expr 
+
+	'+'  shift 11
+	'-'  shift 12
+	'*'  shift 13
+	'/'  shift 14
+	'%'  shift 15
+	.  reduce 12 (src line 73)
+
+
+state 30
+	expr:  expr.'+' expr 
+	expr:  expr.'-' expr 
+	expr:  expr.'*' expr 
+	expr:  expr.'/' expr 
+	expr:  expr.'%' expr 
+	expr:  expr.'&' expr 
+	expr:  expr.'|' expr 
+	expr:  expr '|' expr.    (13)
+
+	'&'  shift 16
+	'+'  shift 11
+	'-'  shift 12
+	'*'  shift 13
+	'/'  shift 14
+	'%'  shift 15
+	.  reduce 13 (src line 75)
+
+
+state 31
 	stat:  LETTER '=' expr.    (4)
 	expr:  expr.'+' expr 
 	expr:  expr.'-' expr 
@@ -361,31 +388,110 @@ state 29
 	expr:  expr.'&' expr 
 	expr:  expr.'|' expr 
 
-	'|'  shift 16
-	'&'  shift 15
-	'+'  shift 10
-	'-'  shift 11
-	'*'  shift 12
-	'/'  shift 13
-	'%'  shift 14
-	.  reduce 4 (src line 52)
+	'|'  shift 17
+	'&'  shift 16
+	'+'  shift 11
+	'-'  shift 12
+	'*'  shift 13
+	'/'  shift 14
+	'%'  shift 15
+	.  reduce 4 (src line 51)
 
 
-state 30
-	expr:  '(' expr ')'.    (5)
+state 32
+	stat:  LETTER '=' array.    (5)
 
-	.  reduce 5 (src line 58)
+	.  reduce 5 (src line 55)
 
 
-17 terminals, 5 nonterminals
-18 grammar rules, 31/8000 states
+state 33
+	expr:  '['.LETTER ']' 
+	array:  '['.plenty ']' 
+
+	DIGIT  shift 9
+	LETTER  shift 22
+	.  error
+
+	number  goto 37
+	plenty  goto 36
+
+state 34
+	expr:  '(' expr ')'.    (6)
+
+	.  reduce 6 (src line 61)
+
+
+state 35
+	expr:  '[' LETTER ']'.    (16)
+
+	.  reduce 16 (src line 81)
+
+
+state 36
+	array:  '[' plenty.']' 
+	plenty:  plenty.',' number 
+
+	']'  shift 38
+	','  shift 39
+	.  error
+
+
+state 37
+	plenty:  number.',' number 
+	number:  number.DIGIT 
+
+	DIGIT  shift 23
+	','  shift 40
+	.  error
+
+
+state 38
+	array:  '[' plenty ']'.    (18)
+
+	.  reduce 18 (src line 87)
+
+
+state 39
+	plenty:  plenty ','.number 
+
+	DIGIT  shift 9
+	.  error
+
+	number  goto 41
+
+state 40
+	plenty:  number ','.number 
+
+	DIGIT  shift 9
+	.  error
+
+	number  goto 42
+
+state 41
+	plenty:  plenty ',' number.    (19)
+	number:  number.DIGIT 
+
+	DIGIT  shift 23
+	.  reduce 19 (src line 90)
+
+
+state 42
+	plenty:  number ',' number.    (20)
+	number:  number.DIGIT 
+
+	DIGIT  shift 23
+	.  reduce 20 (src line 92)
+
+
+20 terminals, 7 nonterminals
+23 grammar rules, 43/16000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
-54 working sets used
-memory: parser 24/120000
-17 extra closures
-86 shift entries, 1 exceptions
-14 goto entries
+56 working sets used
+memory: parser 28/240000
+19 extra closures
+109 shift entries, 1 exceptions
+19 goto entries
 10 entries saved by goto default
-Optimizer space used: output 54/120000
-54 table entries, 0 zero
-maximum spread: 17, maximum offset: 17
+Optimizer space used: output 75/240000
+75 table entries, 0 zero
+maximum spread: 20, maximum offset: 40
