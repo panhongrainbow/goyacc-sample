@@ -24,10 +24,14 @@ var arrayMap = make(map[int][]int)
 // two dimensionals
 var arrayMap2 = make(map[int][][]int)
 
+// three dimensionals
+var arrayMap3 = make(map[int][][][]int)
+
 // temporary
 var planty = []int{}
 var array = []int{}
 var twoDarray = [][]int{}
+var threeDarray = [][][]int{}
 
 // calculate
 var base int
@@ -72,6 +76,10 @@ stat	:    expr
                 {
                 	arrayMap2[$1] = twoDarray
                 }
+        |    LETTER '=' threeDarray
+                {
+                	arrayMap3[$1] = threeDarray
+                }
 	;
 
 expr	:    '(' expr ')'
@@ -98,7 +106,23 @@ expr	:    '(' expr ')'
                 { fmt.Println(arrayMap[$2]) }
         |    '[' '[' LETTER ']' ']'
                 { fmt.Println(arrayMap2[$3]) }
+        |    '[' '[' '[' LETTER ']' ']' ']'
+                { fmt.Println(arrayMap3[$4]) }
 	|    number
+	;
+
+// array : (three dimensionals)
+threeDarray:    '[' threeLplanty ']'
+	|    '[' twoDarray ']'
+	    { threeDarray = append(threeDarray, twoDarray); twoDarray = [][]int{} }
+        ;
+
+threeLplanty	:    twoDarray ','
+                { threeDarray = append(threeDarray, twoDarray); twoDarray = [][]int{} }
+	|    threeLplanty twoDarray
+		{ threeDarray = append(threeDarray, twoDarray); twoDarray = [][]int{} }
+	|    threeLplanty ',' twoDarray
+		{ threeDarray = append(threeDarray, twoDarray); twoDarray = [][]int{} }
 	;
 
 // array : (two dimensionals)
@@ -113,6 +137,7 @@ twoLplanty	:    array ','
 		{ twoDarray = append(twoDarray, array); array = []int{} }
 	|    twoLplanty ',' array
 		{ twoDarray = append(twoDarray, array); array = []int{} }
+	;
 
 // array : (one dimensional)
 array	:    '[' plenty ']'
