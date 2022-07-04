@@ -25,9 +25,11 @@ var arrayMap = make(map[int][]int)
 var arrayMap2 = make(map[int][][]int)
 
 // temporary
-var tmp = []int{}
-var tmp1 = []int{}
-var tmp2 = [][]int{}
+var planty = []int{}
+var array = []int{}
+var twoDarray = [][]int{}
+
+// calculate
 var base int
 
 %}
@@ -64,11 +66,11 @@ stat	:    expr
 		}
 	|    LETTER '=' array
         	{
-        		arrayMap[$1] = tmp
+        		arrayMap[$1] = array
         	}
-        |    LETTER '=' array2
+        |    LETTER '=' twoDarray
                 {
-                	arrayMap2[$1] = tmp2
+                	arrayMap2[$1] = twoDarray
                 }
 	;
 
@@ -100,24 +102,29 @@ expr	:    '(' expr ')'
 	;
 
 // array : (two dimensionals)
-array2	:    '[' plenty2 ']'
+twoDarray:    '[' twoLplanty ']'
+	|    '[' array ']'
+	    { twoDarray = append(twoDarray, array); array = []int{} }
+        ;
 
-plenty2	:    array ','
-                { tmp2 = append(tmp2, tmp1); tmp1 = []int{}}
-	|    plenty2 array
-		{ tmp2 = append(tmp2, tmp1); tmp1 = []int{}}
-	|    plenty2 ',' array
-		{ tmp2 = append(tmp2, tmp1); tmp1 = []int{}}
+twoLplanty	:    array ','
+                { twoDarray = append(twoDarray, array); array = []int{} }
+	|    twoLplanty array
+		{ twoDarray = append(twoDarray, array); array = []int{} }
+	|    twoLplanty ',' array
+		{ twoDarray = append(twoDarray, array); array = []int{} }
 
 // array : (one dimensional)
 array	:    '[' plenty ']'
-		{ tmp1 = tmp; tmp = []int{} }
+		{ array = planty; planty = []int{} }
+	|    '[' number ']'
+             	{ array = []int{$2}; planty = []int{} }
 	;
 
 plenty	:    plenty ',' number
-		{ tmp = append(tmp, $3) }
+		{ planty = append(planty, $3) }
 	|    number ',' number
-		{ tmp = append(tmp, $1, $3) }
+		{ planty = append(planty, $1, $3) }
 	;
 
 // number
@@ -140,7 +147,6 @@ type CalcLex struct {
 	s string
 	pos int
 }
-
 
 func (l *CalcLex) Lex(lval *CalcSymType) int {
 	var c rune = ' '
