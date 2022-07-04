@@ -15,9 +15,19 @@ import (
 	"unicode"
 )
 
+// a number
 var regs = make([]int, 26)
+
+// one dimensional
 var arrayMap = make(map[int][]int)
+
+// two dimensionals
+var arrayMap2 = make(map[int][][]int)
+
+// temporary
 var tmp = []int{}
+var tmp1 = []int{}
+var tmp2 = [][]int{}
 var base int
 
 %}
@@ -50,12 +60,16 @@ list	: /* empty */
 stat	:    expr
 	|    LETTER '=' expr
 		{
-			regs[$1]  =  $3
+			regs[$1] = $3
 		}
 	|    LETTER '=' array
         	{
-        		arrayMap[$1]  =  tmp
+        		arrayMap[$1] = tmp
         	}
+        |    LETTER '=' array2
+                {
+                	arrayMap2[$1] = tmp2
+                }
 	;
 
 expr	:    '(' expr ')'
@@ -80,17 +94,31 @@ expr	:    '(' expr ')'
 		{ fmt.Println(regs[$1]) }
 	|    '[' LETTER ']'
                 { fmt.Println(arrayMap[$2]) }
+        |    '[' '[' LETTER ']' ']'
+                { fmt.Println(arrayMap2[$3]) }
 	|    number
 	;
 
-// array : assemble to array
-array	:    '[' plenty ']'
+// array : (two dimensionals)
+array2	:    '[' plenty2 ']'
 
-// plenty : a plenty of numbers
+plenty2	:    array ','
+                { tmp2 = append(tmp2, tmp1); tmp1 = []int{}}
+	|    plenty2 array
+		{ tmp2 = append(tmp2, tmp1); tmp1 = []int{}}
+	|    plenty2 ',' array
+		{ tmp2 = append(tmp2, tmp1); tmp1 = []int{}}
+
+// array : (one dimensional)
+array	:    '[' plenty ']'
+		{ tmp1 = tmp; tmp = []int{} }
+	;
+
 plenty	:    plenty ',' number
 		{ tmp = append(tmp, $3) }
 	|    number ',' number
 		{ tmp = append(tmp, $1, $3) }
+	;
 
 // number
 number	:    DIGIT
