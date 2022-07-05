@@ -28,7 +28,7 @@ var arrayMap2 = make(map[int][][]int)
 var arrayMap3 = make(map[int][][][]int)
 
 // temporary
-var planty = []int{}
+// var planty = []int{}
 var array = []int{}
 var twoDarray = [][]int{}
 var threeDarray = [][][]int{}
@@ -42,11 +42,13 @@ var base int
 // as ${PREFIX}SymType, of which a reference is passed to the lexer.
 %union{
 	val int
+	slice []int
 }
 
 // any non-terminal which returns a value needs a type, which is
 // really a field name in the above union struct
-%type <val> expr number plenty
+%type <val> expr number
+%type <slice> plenty
 
 // same for terminals
 %token <val> DIGIT LETTER
@@ -141,15 +143,15 @@ twoLplanty	:    array ','
 
 // array : (one dimensional)
 array	:    '[' plenty ']'
-		{ array = planty; planty = []int{} }
+		{ array = $2; $2 = []int{} }
 	|    '[' number ']'
-             	{ array = []int{$2}; planty = []int{} }
+             	{ array = []int{$2} }
 	;
 
 plenty	:    plenty ',' number
-		{ planty = append(planty, $3) }
+		{ $$ = append($$, $3) }
 	|    number ',' number
-		{ planty = append(planty, $1, $3) }
+		{ $$ = append($$, $1, $3) }
 	;
 
 // number

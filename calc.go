@@ -28,7 +28,7 @@ var arrayMap2 = make(map[int][][]int)
 var arrayMap3 = make(map[int][][][]int)
 
 // temporary
-var planty = []int{}
+// var planty = []int{}
 var array = []int{}
 var twoDarray = [][]int{}
 var threeDarray = [][][]int{}
@@ -38,8 +38,9 @@ var base int
 
 //line calc.y:43
 type CalcSymType struct {
-	yys int
-	val int
+	yys   int
+	val   int
+	slice []int
 }
 
 const DIGIT = 57346
@@ -75,7 +76,7 @@ const CalcEofCode = 1
 const CalcErrCode = 2
 const CalcInitialStackSize = 16
 
-//line calc.y:169
+//line calc.y:171
 /*  start  of  programs  */
 
 type CalcLex struct {
@@ -572,191 +573,190 @@ Calcdefault:
 
 	case 4:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:68
+//line calc.y:70
 		{
 			regs[CalcDollar[1].val] = CalcDollar[3].val
 		}
 	case 5:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:72
+//line calc.y:74
 		{
 			arrayMap[CalcDollar[1].val] = array
 		}
 	case 6:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:76
+//line calc.y:78
 		{
 			arrayMap2[CalcDollar[1].val] = twoDarray
 		}
 	case 7:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:80
+//line calc.y:82
 		{
 			arrayMap3[CalcDollar[1].val] = threeDarray
 		}
 	case 8:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:86
+//line calc.y:88
 		{
 			CalcVAL.val = CalcDollar[2].val
 		}
 	case 9:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:88
+//line calc.y:90
 		{
 			CalcVAL.val = CalcDollar[1].val + CalcDollar[3].val
 		}
 	case 10:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:90
+//line calc.y:92
 		{
 			CalcVAL.val = CalcDollar[1].val - CalcDollar[3].val
 		}
 	case 11:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:92
+//line calc.y:94
 		{
 			CalcVAL.val = CalcDollar[1].val * CalcDollar[3].val
 		}
 	case 12:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:94
+//line calc.y:96
 		{
 			CalcVAL.val = CalcDollar[1].val / CalcDollar[3].val
 		}
 	case 13:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:96
+//line calc.y:98
 		{
 			CalcVAL.val = CalcDollar[1].val % CalcDollar[3].val
 		}
 	case 14:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:98
+//line calc.y:100
 		{
 			CalcVAL.val = CalcDollar[1].val & CalcDollar[3].val
 		}
 	case 15:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:100
+//line calc.y:102
 		{
 			CalcVAL.val = CalcDollar[1].val | CalcDollar[3].val
 		}
 	case 16:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:102
+//line calc.y:104
 		{
 			CalcVAL.val = -CalcDollar[2].val
 		}
 	case 17:
 		CalcDollar = CalcS[Calcpt-1 : Calcpt+1]
-//line calc.y:104
+//line calc.y:106
 		{
 			fmt.Println(regs[CalcDollar[1].val])
 		}
 	case 18:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:106
+//line calc.y:108
 		{
 			fmt.Println(arrayMap[CalcDollar[2].val])
 		}
 	case 19:
 		CalcDollar = CalcS[Calcpt-5 : Calcpt+1]
-//line calc.y:108
+//line calc.y:110
 		{
 			fmt.Println(arrayMap2[CalcDollar[3].val])
 		}
 	case 20:
 		CalcDollar = CalcS[Calcpt-7 : Calcpt+1]
-//line calc.y:110
+//line calc.y:112
 		{
 			fmt.Println(arrayMap3[CalcDollar[4].val])
 		}
 	case 23:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:117
+//line calc.y:119
 		{
 			threeDarray = append(threeDarray, twoDarray)
 			twoDarray = [][]int{}
 		}
 	case 24:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:121
+//line calc.y:123
 		{
 			threeDarray = append(threeDarray, twoDarray)
 			twoDarray = [][]int{}
 		}
 	case 25:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:123
+//line calc.y:125
 		{
 			threeDarray = append(threeDarray, twoDarray)
 			twoDarray = [][]int{}
 		}
 	case 26:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:125
+//line calc.y:127
 		{
 			threeDarray = append(threeDarray, twoDarray)
 			twoDarray = [][]int{}
 		}
 	case 28:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:131
+//line calc.y:133
 		{
 			twoDarray = append(twoDarray, array)
 			array = []int{}
 		}
 	case 29:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:135
+//line calc.y:137
 		{
 			twoDarray = append(twoDarray, array)
 			array = []int{}
 		}
 	case 30:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:137
+//line calc.y:139
 		{
 			twoDarray = append(twoDarray, array)
 			array = []int{}
 		}
 	case 31:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:139
+//line calc.y:141
 		{
 			twoDarray = append(twoDarray, array)
 			array = []int{}
 		}
 	case 32:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:144
+//line calc.y:146
 		{
-			array = planty
-			planty = []int{}
+			array = CalcDollar[2].slice
+			CalcDollar[2].slice = []int{}
 		}
 	case 33:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:146
+//line calc.y:148
 		{
 			array = []int{CalcDollar[2].val}
-			planty = []int{}
 		}
 	case 34:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:150
+//line calc.y:152
 		{
-			planty = append(planty, CalcDollar[3].val)
+			CalcVAL.slice = append(CalcVAL.slice, CalcDollar[3].val)
 		}
 	case 35:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:152
+//line calc.y:154
 		{
-			planty = append(planty, CalcDollar[1].val, CalcDollar[3].val)
+			CalcVAL.slice = append(CalcVAL.slice, CalcDollar[1].val, CalcDollar[3].val)
 		}
 	case 36:
 		CalcDollar = CalcS[Calcpt-1 : Calcpt+1]
-//line calc.y:157
+//line calc.y:159
 		{
 			CalcVAL.val = CalcDollar[1].val
 			if CalcDollar[1].val == 0 {
@@ -767,7 +767,7 @@ Calcdefault:
 		}
 	case 37:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:166
+//line calc.y:168
 		{
 			CalcVAL.val = base*CalcDollar[1].val + CalcDollar[2].val
 		}
