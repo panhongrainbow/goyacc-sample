@@ -29,7 +29,7 @@ var arrayMap3 = make(map[int][][][]int)
 
 // temporary
 // var planty = []int{}
-var array = []int{}
+// var array = []int{}
 var twoDarray = [][]int{}
 var threeDarray = [][][]int{}
 
@@ -48,7 +48,7 @@ var base int
 // any non-terminal which returns a value needs a type, which is
 // really a field name in the above union struct
 %type <val> expr number
-%type <slice> plenty
+%type <slice> plenty array
 
 // same for terminals
 %token <val> DIGIT LETTER
@@ -72,7 +72,7 @@ stat	:    expr
 		}
 	|    LETTER '=' array
         	{
-        		arrayMap[$1] = array
+        		arrayMap[$1] = $3
         	}
         |    LETTER '=' twoDarray
                 {
@@ -130,22 +130,22 @@ threeLplanty	:    twoDarray ','
 // array : (two dimensionals)
 twoDarray:    '[' twoLplanty ']'
 	|    '[' array ']'
-	    { twoDarray = append(twoDarray, array); array = []int{} }
+	    { twoDarray = append(twoDarray, $2); $2 = []int{} }
         ;
 
 twoLplanty	:    array ','
-                { twoDarray = append(twoDarray, array); array = []int{} }
+                { twoDarray = append(twoDarray, $1); $1 = []int{} }
 	|    twoLplanty array
-		{ twoDarray = append(twoDarray, array); array = []int{} }
+		{ twoDarray = append(twoDarray, $2); $2 = []int{} }
 	|    twoLplanty ',' array
-		{ twoDarray = append(twoDarray, array); array = []int{} }
+		{ twoDarray = append(twoDarray, $3); $3 = []int{} }
 	;
 
 // array : (one dimensional)
 array	:    '[' plenty ']'
-		{ array = $2; $2 = []int{} }
+		{ $$ = $2; $2 = []int{} }
 	|    '[' number ']'
-             	{ array = []int{$2} }
+             	{ $$ = []int{$2} }
 	;
 
 plenty	:    plenty ',' number

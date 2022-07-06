@@ -29,7 +29,7 @@ var arrayMap3 = make(map[int][][][]int)
 
 // temporary
 // var planty = []int{}
-var array = []int{}
+// var array = []int{}
 var twoDarray = [][]int{}
 var threeDarray = [][][]int{}
 
@@ -170,15 +170,15 @@ var CalcPact = [...]int16{
 }
 
 var CalcPgo = [...]int8{
-	0, 10, 0, 115, 114, 113, 2, 1, 112, 111,
+	0, 10, 0, 115, 2, 114, 113, 1, 112, 111,
 	88,
 }
 
 var CalcR1 = [...]int8{
-	0, 4, 4, 5, 5, 5, 5, 5, 1, 1,
+	0, 5, 5, 6, 6, 6, 6, 6, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 8, 8, 9, 9, 9, 7, 7, 10,
-	10, 10, 6, 6, 3, 3, 2, 2,
+	10, 10, 4, 4, 3, 3, 2, 2,
 }
 
 var CalcR2 = [...]int8{
@@ -189,14 +189,14 @@ var CalcR2 = [...]int8{
 }
 
 var CalcChk = [...]int16{
-	-1000, -4, -5, -1, 5, 16, 9, 18, -2, 4,
+	-1000, -5, -6, -1, 5, 16, 9, 18, -2, 4,
 	14, 8, 9, 10, 11, 12, 7, 6, 15, -1,
 	5, -1, 5, 18, 4, -1, -1, -1, -1, -1,
-	-1, -1, -1, -6, -7, -8, 18, 17, 19, 5,
-	18, 18, -9, -7, -10, -6, -3, -2, 19, 5,
-	18, 19, -7, 20, 18, 19, 20, 19, -6, 20,
+	-1, -1, -1, -4, -7, -8, 18, 17, 19, 5,
+	18, 18, -9, -7, -10, -4, -3, -2, 19, 5,
+	18, 19, -7, 20, 18, 19, 20, 19, -4, 20,
 	18, 19, 20, 19, 20, 19, 20, 19, 19, -7,
-	-6, -2, -2, 19, 19,
+	-4, -2, -2, 19, 19,
 }
 
 var CalcDef = [...]int8{
@@ -581,7 +581,7 @@ Calcdefault:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
 //line calc.y:74
 		{
-			arrayMap[CalcDollar[1].val] = array
+			arrayMap[CalcDollar[1].val] = CalcDollar[3].slice
 		}
 	case 6:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
@@ -705,42 +705,42 @@ Calcdefault:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
 //line calc.y:133
 		{
-			twoDarray = append(twoDarray, array)
-			array = []int{}
+			twoDarray = append(twoDarray, CalcDollar[2].slice)
+			CalcDollar[2].slice = []int{}
 		}
 	case 29:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
 //line calc.y:137
 		{
-			twoDarray = append(twoDarray, array)
-			array = []int{}
+			twoDarray = append(twoDarray, CalcDollar[1].slice)
+			CalcDollar[1].slice = []int{}
 		}
 	case 30:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
 //line calc.y:139
 		{
-			twoDarray = append(twoDarray, array)
-			array = []int{}
+			twoDarray = append(twoDarray, CalcDollar[2].slice)
+			CalcDollar[2].slice = []int{}
 		}
 	case 31:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
 //line calc.y:141
 		{
-			twoDarray = append(twoDarray, array)
-			array = []int{}
+			twoDarray = append(twoDarray, CalcDollar[3].slice)
+			CalcDollar[3].slice = []int{}
 		}
 	case 32:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
 //line calc.y:146
 		{
-			array = CalcDollar[2].slice
+			CalcVAL.slice = CalcDollar[2].slice
 			CalcDollar[2].slice = []int{}
 		}
 	case 33:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
 //line calc.y:148
 		{
-			array = []int{CalcDollar[2].val}
+			CalcVAL.slice = []int{CalcDollar[2].val}
 		}
 	case 34:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]

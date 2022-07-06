@@ -759,7 +759,7 @@ state 74
 38 grammar rules, 75/16000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
 60 working sets used
-memory: parser 40/240000
+memory: parser 38/240000
 27 extra closures
 139 shift entries, 1 exceptions
 32 goto entries
