@@ -27,12 +27,6 @@ var arrayMap2 = make(map[int][][]int)
 // three dimensionals
 var arrayMap3 = make(map[int][][][]int)
 
-// temporary
-// var planty = []int{}
-// var array = []int{}
-// var twoDarray = [][]int{}
-var threeDarray = [][][]int{}
-
 // calculate
 var base int
 
@@ -44,6 +38,7 @@ var base int
 	val int
 	slice []int
 	twoDslice [][]int
+	threeDslice [][][]int
 }
 
 // any non-terminal which returns a value needs a type, which is
@@ -51,6 +46,7 @@ var base int
 %type <val> expr number
 %type <slice> plenty array
 %type <twoDslice> twoLplanty twoDarray
+%type <threeDslice> threeLplanty threeDarray
 
 // same for terminals
 %token <val> DIGIT LETTER
@@ -82,7 +78,7 @@ stat	:    expr
                 }
         |    LETTER '=' threeDarray
                 {
-                	arrayMap3[$1] = threeDarray
+                	arrayMap3[$1] = $3
                 }
 	;
 
@@ -117,16 +113,17 @@ expr	:    '(' expr ')'
 
 // array : (three dimensionals)
 threeDarray:    '[' threeLplanty ']'
+	    { $$ = $2 }
 	|    '[' twoDarray ']'
-	    { threeDarray = append(threeDarray, $2); $2 = [][]int{} }
+	    { $$ = append($$, $2) }
         ;
 
 threeLplanty	:    twoDarray ','
-                { threeDarray = append(threeDarray, $1); $1 = [][]int{} }
+                { $$ = append($$, $1) }
 	|    threeLplanty twoDarray
-		{ threeDarray = append(threeDarray, $2); $2 = [][]int{} }
+		{ $$ = append($$, $2) }
 	|    threeLplanty ',' twoDarray
-		{ threeDarray = append(threeDarray, $3); $3 = [][]int{} }
+		{ $$ = append($$, $3) }
 	;
 
 // array : (two dimensionals)
