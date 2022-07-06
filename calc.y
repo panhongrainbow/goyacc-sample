@@ -30,7 +30,7 @@ var arrayMap3 = make(map[int][][][]int)
 // temporary
 // var planty = []int{}
 // var array = []int{}
-var twoDarray = [][]int{}
+// var twoDarray = [][]int{}
 var threeDarray = [][][]int{}
 
 // calculate
@@ -43,12 +43,14 @@ var base int
 %union{
 	val int
 	slice []int
+	twoDslice [][]int
 }
 
 // any non-terminal which returns a value needs a type, which is
 // really a field name in the above union struct
 %type <val> expr number
 %type <slice> plenty array
+%type <twoDslice> twoLplanty twoDarray
 
 // same for terminals
 %token <val> DIGIT LETTER
@@ -76,7 +78,7 @@ stat	:    expr
         	}
         |    LETTER '=' twoDarray
                 {
-                	arrayMap2[$1] = twoDarray
+                	arrayMap2[$1] = $3
                 }
         |    LETTER '=' threeDarray
                 {
@@ -116,34 +118,35 @@ expr	:    '(' expr ')'
 // array : (three dimensionals)
 threeDarray:    '[' threeLplanty ']'
 	|    '[' twoDarray ']'
-	    { threeDarray = append(threeDarray, twoDarray); twoDarray = [][]int{} }
+	    { threeDarray = append(threeDarray, $2); $2 = [][]int{} }
         ;
 
 threeLplanty	:    twoDarray ','
-                { threeDarray = append(threeDarray, twoDarray); twoDarray = [][]int{} }
+                { threeDarray = append(threeDarray, $1); $1 = [][]int{} }
 	|    threeLplanty twoDarray
-		{ threeDarray = append(threeDarray, twoDarray); twoDarray = [][]int{} }
+		{ threeDarray = append(threeDarray, $2); $2 = [][]int{} }
 	|    threeLplanty ',' twoDarray
-		{ threeDarray = append(threeDarray, twoDarray); twoDarray = [][]int{} }
+		{ threeDarray = append(threeDarray, $3); $3 = [][]int{} }
 	;
 
 // array : (two dimensionals)
 twoDarray:    '[' twoLplanty ']'
+	    { $$ = $2 }
 	|    '[' array ']'
-	    { twoDarray = append(twoDarray, $2); $2 = []int{} }
+	    { $$ = append($$, $2) }
         ;
 
 twoLplanty	:    array ','
-                { twoDarray = append(twoDarray, $1); $1 = []int{} }
+                { $$ = append($$, $1) }
 	|    twoLplanty array
-		{ twoDarray = append(twoDarray, $2); $2 = []int{} }
+		{ $$ = append($$, $2) }
 	|    twoLplanty ',' array
-		{ twoDarray = append(twoDarray, $3); $3 = []int{} }
+		{ $$ = append($$, $3) }
 	;
 
 // array : (one dimensional)
 array	:    '[' plenty ']'
-		{ $$ = $2; $2 = []int{} }
+		{ $$ = $2 }
 	|    '[' number ']'
              	{ $$ = []int{$2} }
 	;
