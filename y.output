@@ -8,7 +8,7 @@ state 0
 	'-'  shift 6
 	'('  shift 5
 	'['  shift 7
-	.  reduce 1 (src line 68)
+	.  reduce 1 (src line 62)
 
 	expr  goto 3
 	number  goto 8
@@ -46,7 +46,7 @@ state 3
 	'*'  shift 13
 	'/'  shift 14
 	'%'  shift 15
-	.  reduce 3 (src line 72)
+	.  reduce 3 (src line 66)
 
 
 state 4
@@ -57,7 +57,7 @@ state 4
 	expr:  LETTER.    (17)
 
 	'='  shift 18
-	.  reduce 17 (src line 109)
+	.  reduce 17 (src line 103)
 
 
 state 5
@@ -101,19 +101,19 @@ state 8
 	number:  number.DIGIT 
 
 	DIGIT  shift 24
-	.  reduce 21 (src line 117)
+	.  reduce 21 (src line 111)
 
 
 state 9
-	number:  DIGIT.    (36)
+	number:  DIGIT.    (31)
 
-	.  reduce 36 (src line 164)
+	.  reduce 31 (src line 145)
 
 
 state 10
 	list:  stat '\n'.    (2)
 
-	.  reduce 2 (src line 69)
+	.  reduce 2 (src line 63)
 
 
 state 11
@@ -223,8 +223,11 @@ state 18
 	expr  goto 32
 	number  goto 8
 	array  goto 33
+	array2  goto 37
 	twoDarray  goto 34
+	twoDarray2  goto 38
 	threeDarray  goto 35
+	threeDarray2  goto 39
 
 state 19
 	expr:  '(' expr.')' 
@@ -243,14 +246,14 @@ state 19
 	'*'  shift 13
 	'/'  shift 14
 	'%'  shift 15
-	')'  shift 37
+	')'  shift 40
 	.  error
 
 
 state 20
 	expr:  LETTER.    (17)
 
-	.  reduce 17 (src line 109)
+	.  reduce 17 (src line 103)
 
 
 state 21
@@ -263,13 +266,13 @@ state 21
 	expr:  expr.'|' expr 
 	expr:  '-' expr.    (16)
 
-	.  reduce 16 (src line 107)
+	.  reduce 16 (src line 101)
 
 
 state 22
 	expr:  '[' LETTER.']' 
 
-	']'  shift 38
+	']'  shift 41
 	.  error
 
 
@@ -277,15 +280,15 @@ state 23
 	expr:  '[' '['.LETTER ']' ']' 
 	expr:  '[' '['.'[' LETTER ']' ']' ']' 
 
-	LETTER  shift 39
-	'['  shift 40
+	LETTER  shift 42
+	'['  shift 43
 	.  error
 
 
 state 24
-	number:  number DIGIT.    (37)
+	number:  number DIGIT.    (32)
 
-	.  reduce 37 (src line 173)
+	.  reduce 32 (src line 154)
 
 
 state 25
@@ -301,7 +304,7 @@ state 25
 	'*'  shift 13
 	'/'  shift 14
 	'%'  shift 15
-	.  reduce 9 (src line 93)
+	.  reduce 9 (src line 87)
 
 
 state 26
@@ -317,7 +320,7 @@ state 26
 	'*'  shift 13
 	'/'  shift 14
 	'%'  shift 15
-	.  reduce 10 (src line 95)
+	.  reduce 10 (src line 89)
 
 
 state 27
@@ -330,7 +333,7 @@ state 27
 	expr:  expr.'&' expr 
 	expr:  expr.'|' expr 
 
-	.  reduce 11 (src line 97)
+	.  reduce 11 (src line 91)
 
 
 state 28
@@ -343,7 +346,7 @@ state 28
 	expr:  expr.'&' expr 
 	expr:  expr.'|' expr 
 
-	.  reduce 12 (src line 99)
+	.  reduce 12 (src line 93)
 
 
 state 29
@@ -356,7 +359,7 @@ state 29
 	expr:  expr.'&' expr 
 	expr:  expr.'|' expr 
 
-	.  reduce 13 (src line 101)
+	.  reduce 13 (src line 95)
 
 
 state 30
@@ -374,7 +377,7 @@ state 30
 	'*'  shift 13
 	'/'  shift 14
 	'%'  shift 15
-	.  reduce 14 (src line 103)
+	.  reduce 14 (src line 97)
 
 
 state 31
@@ -393,7 +396,7 @@ state 31
 	'*'  shift 13
 	'/'  shift 14
 	'%'  shift 15
-	.  reduce 15 (src line 105)
+	.  reduce 15 (src line 99)
 
 
 state 32
@@ -413,357 +416,274 @@ state 32
 	'*'  shift 13
 	'/'  shift 14
 	'%'  shift 15
-	.  reduce 4 (src line 73)
+	.  reduce 4 (src line 67)
 
 
 state 33
 	stat:  LETTER '=' array.    (5)
 
-	.  reduce 5 (src line 77)
+	.  reduce 5 (src line 71)
 
 
 state 34
 	stat:  LETTER '=' twoDarray.    (6)
 
-	.  reduce 6 (src line 81)
+	.  reduce 6 (src line 75)
 
 
 state 35
 	stat:  LETTER '=' threeDarray.    (7)
 
-	.  reduce 7 (src line 85)
+	.  reduce 7 (src line 79)
 
 
 state 36
 	expr:  '['.LETTER ']' 
 	expr:  '['.'[' LETTER ']' ']' 
 	expr:  '['.'[' '[' LETTER ']' ']' ']' 
-	threeDarray:  '['.threeLplanty ']' 
-	threeDarray:  '['.twoDarray ']' 
-	twoDarray:  '['.twoLplanty ']' 
-	twoDarray:  '['.array ']' 
-	array:  '['.plenty ']' 
-	array:  '['.number ']' 
+	threeDarray2:  '['.twoDarray 
+	twoDarray2:  '['.array 
+	array2:  '['.number 
 
 	DIGIT  shift 9
 	LETTER  shift 22
-	'['  shift 41
+	'['  shift 44
 	.  error
 
 	number  goto 47
-	plenty  goto 46
-	array  goto 45
-	twoLplanty  goto 44
-	twoDarray  goto 43
-	threeLplanty  goto 42
+	array  goto 46
+	array2  goto 37
+	twoDarray  goto 45
+	twoDarray2  goto 38
 
 state 37
-	expr:  '(' expr ')'.    (8)
+	array2:  array2.',' number 
+	array:  array2.']' 
 
-	.  reduce 8 (src line 91)
+	']'  shift 49
+	','  shift 48
+	.  error
 
 
 state 38
-	expr:  '[' LETTER ']'.    (18)
+	twoDarray2:  twoDarray2.',' array 
+	twoDarray:  twoDarray2.']' 
 
-	.  reduce 18 (src line 111)
+	']'  shift 51
+	','  shift 50
+	.  error
 
 
 state 39
-	expr:  '[' '[' LETTER.']' ']' 
+	threeDarray2:  threeDarray2.',' twoDarray 
+	threeDarray:  threeDarray2.']' 
 
-	']'  shift 48
+	']'  shift 53
+	','  shift 52
 	.  error
 
 
 state 40
-	expr:  '[' '[' '['.LETTER ']' ']' ']' 
+	expr:  '(' expr ')'.    (8)
 
-	LETTER  shift 49
-	.  error
+	.  reduce 8 (src line 85)
 
 
 state 41
-	expr:  '[' '['.LETTER ']' ']' 
-	expr:  '[' '['.'[' LETTER ']' ']' ']' 
-	twoDarray:  '['.twoLplanty ']' 
-	twoDarray:  '['.array ']' 
-	array:  '['.plenty ']' 
-	array:  '['.number ']' 
+	expr:  '[' LETTER ']'.    (18)
 
-	DIGIT  shift 9
-	LETTER  shift 39
-	'['  shift 50
-	.  error
+	.  reduce 18 (src line 105)
 
-	number  goto 47
-	plenty  goto 46
-	array  goto 45
-	twoLplanty  goto 44
 
 state 42
-	threeDarray:  '[' threeLplanty.']' 
-	threeLplanty:  threeLplanty.twoDarray 
-	threeLplanty:  threeLplanty.',' twoDarray 
+	expr:  '[' '[' LETTER.']' ']' 
 
-	'['  shift 54
-	']'  shift 51
-	','  shift 53
+	']'  shift 54
 	.  error
 
-	twoDarray  goto 52
 
 state 43
-	threeDarray:  '[' twoDarray.']' 
-	threeLplanty:  twoDarray.',' 
+	expr:  '[' '[' '['.LETTER ']' ']' ']' 
 
-	']'  shift 55
-	','  shift 56
+	LETTER  shift 55
 	.  error
 
 
 state 44
-	twoDarray:  '[' twoLplanty.']' 
-	twoLplanty:  twoLplanty.array 
-	twoLplanty:  twoLplanty.',' array 
+	expr:  '[' '['.LETTER ']' ']' 
+	expr:  '[' '['.'[' LETTER ']' ']' ']' 
+	twoDarray2:  '['.array 
+	array2:  '['.number 
 
-	'['  shift 60
-	']'  shift 57
-	','  shift 59
+	DIGIT  shift 9
+	LETTER  shift 42
+	'['  shift 56
 	.  error
 
-	array  goto 58
+	number  goto 47
+	array  goto 46
+	array2  goto 37
 
 state 45
-	twoDarray:  '[' array.']' 
-	twoLplanty:  array.',' 
+	threeDarray2:  '[' twoDarray.    (22)
 
-	']'  shift 61
-	','  shift 62
-	.  error
+	.  reduce 22 (src line 115)
 
 
 state 46
-	array:  '[' plenty.']' 
-	plenty:  plenty.',' number 
+	twoDarray2:  '[' array.    (25)
 
-	']'  shift 63
-	','  shift 64
-	.  error
+	.  reduce 25 (src line 125)
 
 
 state 47
-	array:  '[' number.']' 
-	plenty:  number.',' number 
+	array2:  '[' number.    (28)
 	number:  number.DIGIT 
 
 	DIGIT  shift 24
-	']'  shift 65
-	','  shift 66
-	.  error
+	.  reduce 28 (src line 135)
 
 
 state 48
-	expr:  '[' '[' LETTER ']'.']' 
+	array2:  array2 ','.number 
 
-	']'  shift 67
+	DIGIT  shift 9
 	.  error
 
+	number  goto 57
 
 state 49
-	expr:  '[' '[' '[' LETTER.']' ']' ']' 
+	array:  array2 ']'.    (30)
 
-	']'  shift 68
-	.  error
+	.  reduce 30 (src line 140)
 
 
 state 50
-	expr:  '[' '[' '['.LETTER ']' ']' ']' 
-	array:  '['.plenty ']' 
-	array:  '['.number ']' 
+	twoDarray2:  twoDarray2 ','.array 
 
-	DIGIT  shift 9
-	LETTER  shift 49
+	'['  shift 59
 	.  error
 
-	number  goto 47
-	plenty  goto 46
+	array  goto 58
+	array2  goto 37
 
 state 51
-	threeDarray:  '[' threeLplanty ']'.    (22)
+	twoDarray:  twoDarray2 ']'.    (27)
 
-	.  reduce 22 (src line 121)
+	.  reduce 27 (src line 130)
 
 
 state 52
-	threeLplanty:  threeLplanty twoDarray.    (25)
+	threeDarray2:  threeDarray2 ','.twoDarray 
 
-	.  reduce 25 (src line 129)
+	'['  shift 61
+	.  error
 
+	twoDarray  goto 60
+	twoDarray2  goto 38
 
 state 53
-	threeLplanty:  threeLplanty ','.twoDarray 
+	threeDarray:  threeDarray2 ']'.    (24)
 
-	'['  shift 54
-	.  error
+	.  reduce 24 (src line 120)
 
-	twoDarray  goto 69
 
 state 54
-	twoDarray:  '['.twoLplanty ']' 
-	twoDarray:  '['.array ']' 
+	expr:  '[' '[' LETTER ']'.']' 
 
-	'['  shift 60
+	']'  shift 62
 	.  error
 
-	array  goto 45
-	twoLplanty  goto 44
 
 state 55
-	threeDarray:  '[' twoDarray ']'.    (23)
+	expr:  '[' '[' '[' LETTER.']' ']' ']' 
 
-	.  reduce 23 (src line 123)
+	']'  shift 63
+	.  error
 
 
 state 56
-	threeLplanty:  twoDarray ','.    (24)
+	expr:  '[' '[' '['.LETTER ']' ']' ']' 
+	array2:  '['.number 
 
-	.  reduce 24 (src line 127)
+	DIGIT  shift 9
+	LETTER  shift 55
+	.  error
 
+	number  goto 47
 
 state 57
-	twoDarray:  '[' twoLplanty ']'.    (27)
+	array2:  array2 ',' number.    (29)
+	number:  number.DIGIT 
 
-	.  reduce 27 (src line 136)
+	DIGIT  shift 24
+	.  reduce 29 (src line 137)
 
 
 state 58
-	twoLplanty:  twoLplanty array.    (30)
+	twoDarray2:  twoDarray2 ',' array.    (26)
 
-	.  reduce 30 (src line 144)
+	.  reduce 26 (src line 127)
 
 
 state 59
-	twoLplanty:  twoLplanty ','.array 
-
-	'['  shift 60
-	.  error
-
-	array  goto 70
-
-state 60
-	array:  '['.plenty ']' 
-	array:  '['.number ']' 
+	array2:  '['.number 
 
 	DIGIT  shift 9
 	.  error
 
 	number  goto 47
-	plenty  goto 46
+
+state 60
+	threeDarray2:  threeDarray2 ',' twoDarray.    (23)
+
+	.  reduce 23 (src line 117)
+
 
 state 61
-	twoDarray:  '[' array ']'.    (28)
+	twoDarray2:  '['.array 
 
-	.  reduce 28 (src line 138)
+	'['  shift 59
+	.  error
 
+	array  goto 46
+	array2  goto 37
 
 state 62
-	twoLplanty:  array ','.    (29)
+	expr:  '[' '[' LETTER ']' ']'.    (19)
 
-	.  reduce 29 (src line 142)
+	.  reduce 19 (src line 107)
 
 
 state 63
-	array:  '[' plenty ']'.    (32)
+	expr:  '[' '[' '[' LETTER ']'.']' ']' 
 
-	.  reduce 32 (src line 151)
+	']'  shift 64
+	.  error
 
 
 state 64
-	plenty:  plenty ','.number 
-
-	DIGIT  shift 9
-	.  error
-
-	number  goto 71
-
-state 65
-	array:  '[' number ']'.    (33)
-
-	.  reduce 33 (src line 153)
-
-
-state 66
-	plenty:  number ','.number 
-
-	DIGIT  shift 9
-	.  error
-
-	number  goto 72
-
-state 67
-	expr:  '[' '[' LETTER ']' ']'.    (19)
-
-	.  reduce 19 (src line 113)
-
-
-state 68
-	expr:  '[' '[' '[' LETTER ']'.']' ']' 
-
-	']'  shift 73
-	.  error
-
-
-state 69
-	threeLplanty:  threeLplanty ',' twoDarray.    (26)
-
-	.  reduce 26 (src line 131)
-
-
-state 70
-	twoLplanty:  twoLplanty ',' array.    (31)
-
-	.  reduce 31 (src line 146)
-
-
-state 71
-	plenty:  plenty ',' number.    (34)
-	number:  number.DIGIT 
-
-	DIGIT  shift 24
-	.  reduce 34 (src line 157)
-
-
-state 72
-	plenty:  number ',' number.    (35)
-	number:  number.DIGIT 
-
-	DIGIT  shift 24
-	.  reduce 35 (src line 159)
-
-
-state 73
 	expr:  '[' '[' '[' LETTER ']' ']'.']' 
 
-	']'  shift 74
+	']'  shift 65
 	.  error
 
 
-state 74
+state 65
 	expr:  '[' '[' '[' LETTER ']' ']' ']'.    (20)
 
-	.  reduce 20 (src line 115)
+	.  reduce 20 (src line 109)
 
 
 20 terminals, 11 nonterminals
-38 grammar rules, 75/16000 states
+33 grammar rules, 66/16000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
 60 working sets used
-memory: parser 38/240000
-27 extra closures
-139 shift entries, 1 exceptions
-32 goto entries
-17 entries saved by goto default
-Optimizer space used: output 116/240000
-116 table entries, 0 zero
-maximum spread: 20, maximum offset: 66
+memory: parser 39/240000
+19 extra closures
+129 shift entries, 1 exceptions
+29 goto entries
+18 entries saved by goto default
+Optimizer space used: output 104/240000
+104 table entries, 0 zero
+maximum spread: 20, maximum offset: 59

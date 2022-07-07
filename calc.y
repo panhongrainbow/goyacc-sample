@@ -44,9 +44,9 @@ var base int
 // any non-terminal which returns a value needs a type, which is
 // really a field name in the above union struct
 %type <val> expr number
-%type <slice> plenty array
-%type <twoDslice> twoLplanty twoDarray
-%type <threeDslice> threeLplanty threeDarray
+%type <slice> array array2
+%type <twoDslice> twoDarray twoDarray2
+%type <threeDslice> threeDarray threeDarray2
 
 // same for terminals
 %token <val> DIGIT LETTER
@@ -112,46 +112,33 @@ expr	:    '(' expr ')'
 	;
 
 // array : (three dimensionals)
-threeDarray:    '[' threeLplanty ']'
-	    { $$ = $2 }
-	|    '[' twoDarray ']'
-	    { $$ = append($$, $2) }
-        ;
-
-threeLplanty	:    twoDarray ','
-                { $$ = append($$, $1) }
-	|    threeLplanty twoDarray
-		{ $$ = append($$, $2) }
-	|    threeLplanty ',' twoDarray
-		{ $$ = append($$, $3) }
+threeDarray2 : '[' twoDarray
+	 { $$ = append($$, $2) }
+	| threeDarray2 ',' twoDarray
+	 { $$ = append($$, $3) }
+	;
+threeDarray : threeDarray2 ']'
+	 { $$ = $1 }
 	;
 
 // array : (two dimensionals)
-twoDarray:    '[' twoLplanty ']'
-	    { $$ = $2 }
-	|    '[' array ']'
-	    { $$ = append($$, $2) }
-        ;
-
-twoLplanty	:    array ','
-                { $$ = append($$, $1) }
-	|    twoLplanty array
-		{ $$ = append($$, $2) }
-	|    twoLplanty ',' array
-		{ $$ = append($$, $3) }
+twoDarray2 : '[' array
+	 { $$ = append($$, $2) }
+	| twoDarray2 ',' array
+	 { $$ = append($$, $3) }
+	;
+twoDarray : twoDarray2 ']'
+	 { $$ = $1 }
 	;
 
 // array : (one dimensional)
-array	:    '[' plenty ']'
-		{ $$ = $2 }
-	|    '[' number ']'
-             	{ $$ = []int{$2} }
+array2 : '[' number
+	 { $$ = append($$, $2) }
+	| array2 ',' number
+	 { $$ = append($$, $3) }
 	;
-
-plenty	:    plenty ',' number
-		{ $$ = append($$, $3) }
-	|    number ',' number
-		{ $$ = append($$, $1, $3) }
+array : array2 ']'
+	 { $$ = $1 }
 	;
 
 // number
