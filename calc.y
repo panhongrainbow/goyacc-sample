@@ -44,7 +44,7 @@ var base int
 // any non-terminal which returns a value needs a type, which is
 // really a field name in the above union struct
 %type <val> expr number
-%type <slice> array array2
+%type <slice> exprArray array array2
 %type <twoDslice> twoDarray twoDarray2
 %type <threeDslice> threeDarray threeDarray2
 
@@ -68,7 +68,8 @@ stat	:    expr
 		{
 			regs[$1] = $3
 		}
-	|    LETTER '=' array
+	|    exprArray
+	|    LETTER '=' exprArray
         	{
         		arrayMap[$1] = $3
         	}
@@ -80,6 +81,26 @@ stat	:    expr
                 {
                 	arrayMap3[$1] = $3
                 }
+	;
+
+exprArray : '[' LETTER ']'
+	 { fmt.Println(arrayMap[$2]) }
+	| array
+         { $$ = $1 }
+	| exprArray '+' '[' LETTER ']'
+	 {
+	  $$=make([]int, len($1))
+	  for i := 0; i < len($1); i++ {
+	    $$[i] = $1[i]+arrayMap[$4][i]
+	  }
+	 }
+	| exprArray '+' array
+	 {
+	  $$=make([]int, len($1))
+	  for i := 0; i < len($1); i++ {
+	    $$[i] = $1[i]+$3[i]
+	  }
+	 }
 	;
 
 expr	:    '(' expr ')'
@@ -102,8 +123,6 @@ expr	:    '(' expr ')'
 		{ $$  = -$2  }
 	|    LETTER
 		{ fmt.Println(regs[$1]) }
-	|    '[' LETTER ']'
-                { fmt.Println(arrayMap[$2]) }
         |    '[' '[' LETTER ']' ']'
                 { fmt.Println(arrayMap2[$3]) }
         |    '[' '[' '[' LETTER ']' ']' ']'

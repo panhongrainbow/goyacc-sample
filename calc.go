@@ -59,10 +59,10 @@ var CalcToknames = [...]string{
 	"UMINUS",
 	"'\\n'",
 	"'='",
-	"'('",
-	"')'",
 	"'['",
 	"']'",
+	"'('",
+	"')'",
 	"','",
 }
 
@@ -72,7 +72,7 @@ const CalcEofCode = 1
 const CalcErrCode = 2
 const CalcInitialStackSize = 16
 
-//line calc.y:158
+//line calc.y:177
 /*  start  of  programs  */
 
 type CalcLex struct {
@@ -137,69 +137,73 @@ var CalcExca = [...]int8{
 
 const CalcPrivate = 57344
 
-const CalcLast = 104
+const CalcLast = 117
 
 var CalcAct = [...]int8{
-	8, 34, 46, 17, 16, 11, 12, 13, 14, 15,
-	3, 53, 52, 65, 40, 64, 19, 21, 51, 50,
-	63, 33, 25, 26, 27, 28, 29, 30, 31, 32,
-	9, 20, 49, 48, 62, 6, 54, 47, 45, 41,
-	59, 61, 5, 42, 36, 47, 18, 9, 20, 57,
-	9, 4, 6, 58, 60, 6, 43, 47, 22, 5,
-	47, 7, 5, 10, 7, 9, 42, 9, 22, 9,
-	55, 23, 17, 16, 11, 12, 13, 14, 15, 56,
-	9, 44, 16, 11, 12, 13, 14, 15, 11, 12,
-	13, 14, 15, 13, 14, 15, 55, 24, 2, 1,
-	39, 35, 38, 37,
+	9, 42, 56, 10, 60, 58, 5, 59, 57, 29,
+	20, 19, 14, 15, 16, 17, 18, 11, 24, 3,
+	73, 66, 7, 49, 10, 48, 23, 26, 41, 44,
+	68, 6, 53, 72, 33, 34, 35, 36, 37, 38,
+	39, 40, 11, 24, 71, 29, 55, 7, 29, 70,
+	69, 62, 11, 4, 25, 29, 6, 7, 50, 32,
+	65, 67, 31, 28, 8, 29, 6, 29, 11, 51,
+	11, 27, 47, 20, 19, 14, 15, 16, 17, 18,
+	64, 51, 54, 11, 27, 19, 14, 15, 16, 17,
+	18, 13, 52, 22, 63, 28, 14, 15, 16, 17,
+	18, 21, 16, 17, 18, 11, 63, 11, 61, 11,
+	30, 2, 1, 46, 43, 45, 12,
 }
 
 var CalcPact = [...]int16{
-	46, -1000, 49, 66, 31, 43, 43, 53, 93, -1000,
-	-1000, 43, 43, 43, 43, 43, 43, 43, 26, -3,
-	-1000, -1000, 20, 38, -1000, 83, 83, -1000, -1000, -1000,
-	80, 75, 66, -1000, -1000, -1000, 63, 13, -1, -8,
-	-1000, -1000, 17, 91, 61, -1000, -1000, 93, 76, -1000,
-	22, -1000, 23, -1000, 15, 1, 65, 93, -1000, 76,
-	-1000, 22, -1000, -4, -6, -1000,
+	48, -1000, 77, 67, 86, 85, 38, 38, 79, 106,
+	-1000, -1000, 42, -1000, 38, 38, 38, 38, 38, 38,
+	38, 13, 56, 4, -1000, 47, -1000, 41, 76, 106,
+	-1000, 105, -1000, 92, 92, -1000, -1000, -1000, 88, 78,
+	67, 85, -1000, -1000, 66, -12, -13, 103, -1000, -1000,
+	-1000, 34, 89, 106, 64, -1000, -1000, 5, -1000, 14,
+	-1000, 33, 32, 27, 101, -1000, 105, -1000, 5, -1000,
+	-1000, 16, 3, -1000,
 }
 
 var CalcPgo = [...]int8{
-	0, 10, 0, 2, 103, 1, 102, 101, 100, 99,
-	98,
+	0, 19, 0, 6, 2, 116, 1, 115, 114, 113,
+	112, 111,
 }
 
 var CalcR1 = [...]int8{
-	0, 9, 9, 10, 10, 10, 10, 10, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 8, 8, 7, 6, 6, 5, 4, 4,
-	3, 2, 2,
+	0, 10, 10, 11, 11, 11, 11, 11, 11, 3,
+	3, 3, 3, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 9, 9, 8, 7,
+	7, 6, 5, 5, 4, 2, 2,
 }
 
 var CalcR2 = [...]int8{
-	0, 0, 2, 1, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 2, 1, 3, 5,
-	7, 1, 2, 3, 2, 2, 3, 2, 2, 3,
-	2, 1, 2,
+	0, 0, 2, 1, 3, 1, 3, 3, 3, 3,
+	1, 5, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 2, 1, 5, 7, 1, 2, 3, 2, 2,
+	3, 2, 2, 3, 2, 1, 2,
 }
 
 var CalcChk = [...]int16{
-	-1000, -9, -10, -1, 5, 16, 9, 18, -2, 4,
-	14, 8, 9, 10, 11, 12, 7, 6, 15, -1,
-	5, -1, 5, 18, 4, -1, -1, -1, -1, -1,
-	-1, -1, -1, -3, -5, -7, 18, -4, -6, -8,
-	17, 19, 5, 18, 18, -5, -3, -2, 20, 19,
-	20, 19, 20, 19, 19, 5, 18, -2, -3, 18,
-	-5, 18, 19, 19, 19, 19,
+	-1000, -10, -11, -1, 5, -3, 18, 9, 16, -2,
+	-4, 4, -5, 14, 8, 9, 10, 11, 12, 7,
+	6, 15, 8, -1, 5, 16, -1, 5, 16, -2,
+	4, 20, 17, -1, -1, -1, -1, -1, -1, -1,
+	-1, -3, -6, -8, 16, -7, -9, 16, -4, 19,
+	17, 5, 16, -2, 16, -6, -4, 20, 17, 20,
+	17, 5, 17, 5, 16, -4, 16, -6, 16, 17,
+	17, 17, 17, 17,
 }
 
 var CalcDef = [...]int8{
-	1, -2, 0, 3, 17, 0, 0, 0, 21, 31,
-	2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	17, 16, 0, 0, 32, 9, 10, 11, 12, 13,
-	14, 15, 4, 5, 6, 7, 0, 0, 0, 0,
-	8, 18, 0, 0, 0, 22, 25, 28, 0, 30,
-	0, 27, 0, 24, 0, 0, 0, 29, 26, 0,
-	23, 0, 19, 0, 0, 20,
+	1, -2, 0, 3, 22, 5, 0, 0, 0, 25,
+	10, 35, 0, 2, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 22, 0, 21, 0, 0, 32,
+	36, 0, 34, 14, 15, 16, 17, 18, 19, 20,
+	4, 6, 7, 8, 0, 0, 0, 0, 12, 13,
+	9, 0, 0, 33, 0, 26, 29, 0, 31, 0,
+	28, 0, 0, 0, 0, 30, 0, 27, 0, 11,
+	23, 0, 0, 24,
 }
 
 var CalcTok1 = [...]int8{
@@ -207,12 +211,12 @@ var CalcTok1 = [...]int8{
 	14, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 12, 7, 3,
-	16, 17, 10, 8, 20, 9, 3, 11, 3, 3,
+	18, 19, 10, 8, 20, 9, 3, 11, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 15, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 18, 3, 19, 3, 3, 3, 3, 3, 3,
+	3, 16, 3, 17, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 6,
@@ -569,159 +573,183 @@ Calcdefault:
 		{
 			regs[CalcDollar[1].val] = CalcDollar[3].val
 		}
-	case 5:
+	case 6:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:72
+//line calc.y:73
 		{
 			arrayMap[CalcDollar[1].val] = CalcDollar[3].slice
 		}
-	case 6:
+	case 7:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:76
+//line calc.y:77
 		{
 			arrayMap2[CalcDollar[1].val] = CalcDollar[3].twoDslice
 		}
-	case 7:
+	case 8:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:80
+//line calc.y:81
 		{
 			arrayMap3[CalcDollar[1].val] = CalcDollar[3].threeDslice
 		}
-	case 8:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:86
-		{
-			CalcVAL.val = CalcDollar[2].val
-		}
 	case 9:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:88
-		{
-			CalcVAL.val = CalcDollar[1].val + CalcDollar[3].val
-		}
-	case 10:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:90
-		{
-			CalcVAL.val = CalcDollar[1].val - CalcDollar[3].val
-		}
-	case 11:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:92
-		{
-			CalcVAL.val = CalcDollar[1].val * CalcDollar[3].val
-		}
-	case 12:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:94
-		{
-			CalcVAL.val = CalcDollar[1].val / CalcDollar[3].val
-		}
-	case 13:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:96
-		{
-			CalcVAL.val = CalcDollar[1].val % CalcDollar[3].val
-		}
-	case 14:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:98
-		{
-			CalcVAL.val = CalcDollar[1].val & CalcDollar[3].val
-		}
-	case 15:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:100
-		{
-			CalcVAL.val = CalcDollar[1].val | CalcDollar[3].val
-		}
-	case 16:
-		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:102
-		{
-			CalcVAL.val = -CalcDollar[2].val
-		}
-	case 17:
-		CalcDollar = CalcS[Calcpt-1 : Calcpt+1]
-//line calc.y:104
-		{
-			fmt.Println(regs[CalcDollar[1].val])
-		}
-	case 18:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:106
+//line calc.y:87
 		{
 			fmt.Println(arrayMap[CalcDollar[2].val])
 		}
-	case 19:
-		CalcDollar = CalcS[Calcpt-5 : Calcpt+1]
-//line calc.y:108
-		{
-			fmt.Println(arrayMap2[CalcDollar[3].val])
-		}
-	case 20:
-		CalcDollar = CalcS[Calcpt-7 : Calcpt+1]
-//line calc.y:110
-		{
-			fmt.Println(arrayMap3[CalcDollar[4].val])
-		}
-	case 22:
-		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:116
-		{
-			CalcVAL.threeDslice = append(CalcVAL.threeDslice, CalcDollar[2].twoDslice)
-		}
-	case 23:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:118
-		{
-			CalcVAL.threeDslice = append(CalcVAL.threeDslice, CalcDollar[3].twoDslice)
-		}
-	case 24:
-		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:121
-		{
-			CalcVAL.threeDslice = CalcDollar[1].threeDslice
-		}
-	case 25:
-		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:126
-		{
-			CalcVAL.twoDslice = append(CalcVAL.twoDslice, CalcDollar[2].slice)
-		}
-	case 26:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:128
-		{
-			CalcVAL.twoDslice = append(CalcVAL.twoDslice, CalcDollar[3].slice)
-		}
-	case 27:
-		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:131
-		{
-			CalcVAL.twoDslice = CalcDollar[1].twoDslice
-		}
-	case 28:
-		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:136
-		{
-			CalcVAL.slice = append(CalcVAL.slice, CalcDollar[2].val)
-		}
-	case 29:
-		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:138
-		{
-			CalcVAL.slice = append(CalcVAL.slice, CalcDollar[3].val)
-		}
-	case 30:
-		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:141
+	case 10:
+		CalcDollar = CalcS[Calcpt-1 : Calcpt+1]
+//line calc.y:89
 		{
 			CalcVAL.slice = CalcDollar[1].slice
 		}
-	case 31:
+	case 11:
+		CalcDollar = CalcS[Calcpt-5 : Calcpt+1]
+//line calc.y:91
+		{
+			CalcVAL.slice = make([]int, len(CalcDollar[1].slice))
+			for i := 0; i < len(CalcDollar[1].slice); i++ {
+				CalcVAL.slice[i] = CalcDollar[1].slice[i] + arrayMap[CalcDollar[4].val][i]
+			}
+		}
+	case 12:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:98
+		{
+			CalcVAL.slice = make([]int, len(CalcDollar[1].slice))
+			for i := 0; i < len(CalcDollar[1].slice); i++ {
+				CalcVAL.slice[i] = CalcDollar[1].slice[i] + CalcDollar[3].slice[i]
+			}
+		}
+	case 13:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:107
+		{
+			CalcVAL.val = CalcDollar[2].val
+		}
+	case 14:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:109
+		{
+			CalcVAL.val = CalcDollar[1].val + CalcDollar[3].val
+		}
+	case 15:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:111
+		{
+			CalcVAL.val = CalcDollar[1].val - CalcDollar[3].val
+		}
+	case 16:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:113
+		{
+			CalcVAL.val = CalcDollar[1].val * CalcDollar[3].val
+		}
+	case 17:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:115
+		{
+			CalcVAL.val = CalcDollar[1].val / CalcDollar[3].val
+		}
+	case 18:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:117
+		{
+			CalcVAL.val = CalcDollar[1].val % CalcDollar[3].val
+		}
+	case 19:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:119
+		{
+			CalcVAL.val = CalcDollar[1].val & CalcDollar[3].val
+		}
+	case 20:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:121
+		{
+			CalcVAL.val = CalcDollar[1].val | CalcDollar[3].val
+		}
+	case 21:
+		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
+//line calc.y:123
+		{
+			CalcVAL.val = -CalcDollar[2].val
+		}
+	case 22:
 		CalcDollar = CalcS[Calcpt-1 : Calcpt+1]
-//line calc.y:146
+//line calc.y:125
+		{
+			fmt.Println(regs[CalcDollar[1].val])
+		}
+	case 23:
+		CalcDollar = CalcS[Calcpt-5 : Calcpt+1]
+//line calc.y:127
+		{
+			fmt.Println(arrayMap2[CalcDollar[3].val])
+		}
+	case 24:
+		CalcDollar = CalcS[Calcpt-7 : Calcpt+1]
+//line calc.y:129
+		{
+			fmt.Println(arrayMap3[CalcDollar[4].val])
+		}
+	case 26:
+		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
+//line calc.y:135
+		{
+			CalcVAL.threeDslice = append(CalcVAL.threeDslice, CalcDollar[2].twoDslice)
+		}
+	case 27:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:137
+		{
+			CalcVAL.threeDslice = append(CalcVAL.threeDslice, CalcDollar[3].twoDslice)
+		}
+	case 28:
+		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
+//line calc.y:140
+		{
+			CalcVAL.threeDslice = CalcDollar[1].threeDslice
+		}
+	case 29:
+		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
+//line calc.y:145
+		{
+			CalcVAL.twoDslice = append(CalcVAL.twoDslice, CalcDollar[2].slice)
+		}
+	case 30:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:147
+		{
+			CalcVAL.twoDslice = append(CalcVAL.twoDslice, CalcDollar[3].slice)
+		}
+	case 31:
+		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
+//line calc.y:150
+		{
+			CalcVAL.twoDslice = CalcDollar[1].twoDslice
+		}
+	case 32:
+		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
+//line calc.y:155
+		{
+			CalcVAL.slice = append(CalcVAL.slice, CalcDollar[2].val)
+		}
+	case 33:
+		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
+//line calc.y:157
+		{
+			CalcVAL.slice = append(CalcVAL.slice, CalcDollar[3].val)
+		}
+	case 34:
+		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
+//line calc.y:160
+		{
+			CalcVAL.slice = CalcDollar[1].slice
+		}
+	case 35:
+		CalcDollar = CalcS[Calcpt-1 : Calcpt+1]
+//line calc.y:165
 		{
 			CalcVAL.val = CalcDollar[1].val
 			if CalcDollar[1].val == 0 {
@@ -730,9 +758,9 @@ Calcdefault:
 				base = 10
 			}
 		}
-	case 32:
+	case 36:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:155
+//line calc.y:174
 		{
 			CalcVAL.val = base*CalcDollar[1].val + CalcDollar[2].val
 		}
