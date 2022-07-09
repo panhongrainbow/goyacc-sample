@@ -16,16 +16,16 @@ import (
 )
 
 // a number
-var regs = make([]int, 26)
+var regs = make(map[string]int, 26)
 
 // one dimensional
-var arrayMap = make(map[int][]int)
+var arrayMap = make(map[string][]int)
 
 // two dimensionals
-var arrayMap2 = make(map[int][][]int)
+var arrayMap2 = make(map[string][][]int)
 
 // three dimensionals
-var arrayMap3 = make(map[int][][][]int)
+var arrayMap3 = make(map[string][][][]int)
 
 // calculate
 var base int
@@ -36,6 +36,7 @@ var base int
 // as ${PREFIX}SymType, of which a reference is passed to the lexer.
 %union{
 	val int
+	str string
 	slice []int
 	twoDslice [][]int
 	threeDslice [][][]int
@@ -43,6 +44,7 @@ var base int
 
 // any non-terminal which returns a value needs a type, which is
 // really a field name in the above union struct
+%type <str> variable
 %type <val> expr number
 %type <slice> exprArray array array2
 %type <twoDslice> twoDarray twoDarray2
@@ -64,30 +66,30 @@ list	: /* empty */
 	;
 
 stat	:    expr
-	|    LETTER '=' expr
+	|    variable '=' expr
 		{
 			regs[$1] = $3
 		}
 	|    exprArray
-	|    LETTER '=' exprArray
+	|    variable '=' exprArray
         	{
         		arrayMap[$1] = $3
         	}
-        |    LETTER '=' twoDarray
+        |    variable '=' twoDarray
                 {
                 	arrayMap2[$1] = $3
                 }
-        |    LETTER '=' threeDarray
+        |    variable '=' threeDarray
                 {
                 	arrayMap3[$1] = $3
                 }
 	;
 
-exprArray : '[' LETTER ']'
+exprArray : '[' variable ']'
 	 { fmt.Println(arrayMap[$2]) }
 	| array
          { $$ = $1 }
-	| exprArray '+' '[' LETTER ']'
+	| exprArray '+' '[' variable ']'
 	 {
 	  $$=make([]int, len($1))
 	  for i := 0; i < len($1); i++ {
@@ -121,11 +123,11 @@ expr	:    '(' expr ')'
 		{ $$  =  $1 | $3 }
 	|    '-'  expr        %prec  UMINUS
 		{ $$  = -$2  }
-	|    LETTER
+	|    variable
 		{ fmt.Println(regs[$1]) }
-        |    '[' '[' LETTER ']' ']'
+        |    '[' '[' variable ']' ']'
                 { fmt.Println(arrayMap2[$3]) }
-        |    '[' '[' '[' LETTER ']' ']' ']'
+        |    '[' '[' '[' variable ']' ']' ']'
                 { fmt.Println(arrayMap3[$4]) }
 	|    number
 	;
@@ -173,6 +175,16 @@ number	:    DIGIT
 	|    number DIGIT
 		{ $$ = base * $1 + $2 }
 	;
+
+// variables
+variable : LETTER
+	{
+	 $$ = string($1)
+	}
+	| variable LETTER
+	 { $$ = $1 + string($2) }
+	;
+
 
 %%      /*  start  of  programs  */
 
