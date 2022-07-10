@@ -73,7 +73,7 @@ const CalcEofCode = 1
 const CalcErrCode = 2
 const CalcInitialStackSize = 16
 
-//line calc.y:189
+//line calc.y:191
 /*  start  of  programs  */
 
 type CalcLex struct {
@@ -770,13 +770,13 @@ Calcdefault:
 		CalcDollar = CalcS[Calcpt-1 : Calcpt+1]
 //line calc.y:181
 		{
-			CalcVAL.str = string(CalcDollar[1].val)
+			CalcVAL.str = fmt.Sprintf("%c", CalcDollar[1].val)
 		}
 	case 38:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
 //line calc.y:185
 		{
-			CalcVAL.str = CalcDollar[1].str + string(CalcDollar[2].val)
+			CalcVAL.str = CalcDollar[1].str + fmt.Sprintf("%c", CalcDollar[2].val)
 		}
 	}
 	goto Calcstack /* stack new state and value */

@@ -178,11 +178,16 @@ number	:    DIGIT
 
 // variables
 variable : LETTER
-	{
-	 $$ = string($1)
-	}
+	 {
+	  // Reference: https://installmd.com/c/113/go/convert-int-to-string
+	  // Warning: If we use plain int to string conversion, the integer value is interpreted as a Unicode code point.
+	  // And the resulting string will contain the character represented by the code point, encoded in UTF-8.
+	  $$ = fmt.Sprintf("%c", $1)
+	 }
 	| variable LETTER
-	 { $$ = $1 + string($2) }
+	 {
+	  $$ = $1 + fmt.Sprintf("%c", $2)
+	 }
 	;
 
 
