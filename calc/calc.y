@@ -27,6 +27,12 @@ var arrayMap3 = make(map[string][][][]int)
 // calculate
 var base int
 
+// unit test
+type Test struct {
+    node string
+    value []interface{}
+}
+
 %}
 
 // fields inside this union end up as the fields in a structure known
@@ -37,6 +43,8 @@ var base int
 	slice []int
 	twoDslice [][]int
 	threeDslice [][][]int
+	// iface []interface{}
+	test Test
 }
 
 // any non-terminal which returns a value needs a type, which is
@@ -46,6 +54,7 @@ var base int
 %type <slice> exprArray array array2
 %type <twoDslice> twoDarray twoDarray2
 %type <threeDslice> threeDarray threeDarray2
+%type <test> unittest
 
 // same for terminals
 %token <val> DIGIT LETTER
@@ -59,15 +68,36 @@ var base int
 %right '['
 %left ']'
 %right UMINUS      /*  supplies  precedence  for  unary  minus  */
+%right '?'
 
 %%
 
 list	: /* empty */
 	| stat '\n'
-	 {
-          setResult(Calclex, regs)
-         }
+	 {}
+        | unittest
+       	 {
+       	  setResult(Calclex, $1)
+       	 }
 	;
+
+unittest
+ : '?' array2 '\n'
+ {
+  $$.node = "array2"
+  $$.value = append($$.value, $2)
+ }
+ | '?' variable '\n'
+ {
+  $$.node = "variable"
+  $$.value = append($$.value, $2)
+ }
+ | '?' LETTER '\n'
+ {
+  $$.node = "LETTER"
+  $$.value = append($$.value, $2)
+ }
+ ;
 
 stat	:    expr
 	|    variable '=' expr
@@ -182,17 +212,17 @@ number	:    DIGIT
 
 // variables
 variable : LETTER
-	 {
-	  // Reference: https://installmd.com/c/113/go/convert-int-to-string
-	  // Warning: If we use plain int to string conversion, the integer value is interpreted as a Unicode code point.
-	  // And the resulting string will contain the character represented by the code point, encoded in UTF-8.
-	  $$ = fmt.Sprintf("%c", $1)
-	 }
-	| variable LETTER
-	 {
-	  $$ = $1 + fmt.Sprintf("%c", $2)
-	 }
-	;
-
+ {
+  /* Reference: https://installmd.com/c/113/go/convert-int-to-string
+     Warning: If we use plain int to string conversion, the integer value is interpreted as a Unicode code point.
+     And the resulting string will contain the character represented by the code point, encoded in UTF-8.
+  */
+  $$ = fmt.Sprintf("%c", $1)
+ }
+ | variable LETTER
+ {
+  $$ = $1 + fmt.Sprintf("%c", $2)
+ }
+;
 
 %%      /*  start  of  programs  */

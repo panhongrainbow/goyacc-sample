@@ -8,7 +8,7 @@ import (
 type CalcLex struct {
 	S      string
 	pos    int
-	result map[string]int
+	result interface{}
 	err    error
 }
 
@@ -36,6 +36,6 @@ func (l *CalcLex) Error(s string) {
 	fmt.Printf("syntax error: %s\n", s)
 }
 
-func setResult(l CalcLexer, v map[string]int) {
+func setResult(l CalcLexer, v interface{}) {
 	l.(*CalcLex).result = v
 }
