@@ -1,7 +1,7 @@
 package calc
 
 import (
-	"fmt"
+	"errors"
 	"unicode"
 )
 
@@ -33,9 +33,10 @@ func (l *CalcLex) Lex(lval *CalcSymType) int {
 }
 
 func (l *CalcLex) Error(s string) {
-	fmt.Printf("syntax error: %s\n", s)
+	// fmt.Printf("syntax error: %s\n", s)
+	l.err = errors.New("syntax error")
 }
 
-func setResult(l CalcLexer, v interface{}) {
-	l.(*CalcLex).result = v
+func setResult(lexer CalcLexer, value interface{}) {
+	lexer.(*CalcLex).result = value
 }

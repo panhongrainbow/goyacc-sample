@@ -87,16 +87,22 @@ unittest
   $$.node = "array2"
   $$.value = append($$.value, $2)
  }
+ | '?' number '\n'
+  {
+   $$.node = "number"
+   $$.value = append($$.value, $2)
+  }
  | '?' variable '\n'
  {
   $$.node = "variable"
   $$.value = append($$.value, $2)
  }
+ /* conflicts because of rule, "variable : LETTER"
  | '?' LETTER '\n'
  {
   $$.node = "LETTER"
   $$.value = append($$.value, $2)
- }
+ }*/
  ;
 
 stat	:    expr
@@ -187,36 +193,74 @@ twoDarray : twoDarray2 ']'
 	;
 
 // array : (one dimensional)
-array2 : '[' number
-	 { $$ = append($$, $2) }
-	| array2 ',' number
-	 { $$ = append($$, $3) }
-	;
-array : array2 ']'
-	 { $$ = $1 }
-	;
+/*
+ What if I do not have array2 ?
+ There are two pattens
+
+ pattern 1
+  [1,2,3]
+  array, 2, array
+  array, array
+
+ pattern 2
+  [1,2,3]
+  array, 2, 3 ]
+  array, 3 ]
+  array, ]
+  array
+
+ use array2 to aovoid two patterns
+
+ [1,2,3]
+  array2 2, 3 ]
+  array2 3 ]
+  array2 ]
+  array
+*/
+
+array2
+ : '[' number
+ {
+  $$ = append($$, $2)
+ }
+ | array2 ',' number
+ {
+  $$ = append($$, $3)
+ }
+ ;
+array
+ : array2 ']'
+ {
+  $$ = $1
+ }
+ ;
 
 // number
-number	:    DIGIT
-		{
-			$$ = $1;
-			if $1==0 {
-				base = 8
-			} else {
-				base = 10
-			}
-		}
-	|    number DIGIT
-		{ $$ = base * $1 + $2 }
-	;
+// test number not digit because of the rule, "number : DIGIT"
+number
+ : DIGIT
+ {
+  $$ = $1;
+  if $1==0 {
+   base = 8
+  } else {
+   base = 10
+  }
+ }
+ | number DIGIT
+ {
+  $$ = base * $1 + $2
+ }
+ ;
 
 // variables
-variable : LETTER
+/* Reference: https://installmd.com/c/113/go/convert-int-to-string
+ Warning: If we use plain int to string conversion, the integer value is interpreted as a Unicode code point.
+ And the resulting string will contain the character represented by the code point, encoded in UTF-8.
+*/
+variable
+ : LETTER
  {
-  /* Reference: https://installmd.com/c/113/go/convert-int-to-string
-     Warning: If we use plain int to string conversion, the integer value is interpreted as a Unicode code point.
-     And the resulting string will contain the character represented by the code point, encoded in UTF-8.
-  */
   $$ = fmt.Sprintf("%c", $1)
  }
  | variable LETTER
