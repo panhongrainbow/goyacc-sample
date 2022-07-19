@@ -54,7 +54,7 @@ func Test_Calc(t *testing.T) {
 	require.Equal(t, l.result, nil)
 	require.Equal(t, l.err.Error(), "syntax error")
 
-	// >>>>> >>>>> test converting DIGITs to number
+	// >>>>> >>>>> test converting DIGITs to a number
 
 	// one DIGIT (decimal)
 	l = &CalcLex{S: "?1\n"}
@@ -84,7 +84,7 @@ func Test_Calc(t *testing.T) {
 	require.Equal(t, l.result.(Test).value[0], 10)
 	require.Equal(t, l.err, nil)
 
-	// >>>>> >>>>> test converting numbers to sub array (array2)
+	// >>>>> >>>>> test converting numbers to a sub array (array2)
 
 	l = &CalcLex{S: "?[1\n"}
 	CalcParse(l)
@@ -96,5 +96,13 @@ func Test_Calc(t *testing.T) {
 	CalcParse(l)
 	require.Equal(t, l.result.(Test).node, "array2")
 	require.Equal(t, l.result.(Test).value[0], []int{1, 2})
+	require.Equal(t, l.err, nil)
+
+	// >>>>> >>>>> test converting numbers to an array
+
+	l = &CalcLex{S: "?[]\n"}
+	CalcParse(l)
+	require.Equal(t, l.result.(Test).node, "array")
+	require.Equal(t, l.result.(Test).value[0], []int{})
 	require.Equal(t, l.err, nil)
 }

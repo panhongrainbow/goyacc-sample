@@ -82,7 +82,12 @@ list	: /* empty */
 	;
 
 unittest
- : '?' array2 '\n'
+ : '?' array '\n'
+ {
+  $$.node = "array"
+  $$.value = append($$.value, $2)
+ }
+ | '?' array2 '\n'
  {
   $$.node = "array2"
   $$.value = append($$.value, $2)
@@ -259,7 +264,11 @@ twoDarray
 */
 
 array2
- : '[' number
+ : '[' /* empty */
+ {
+  $$=[]int{}
+ }
+ | '[' number
  {
   $$ = append($$, $2)
  }
