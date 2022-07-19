@@ -12,6 +12,20 @@ func Test_Calc(t *testing.T) {
 	fmt.Println(l.result)
 
 	// >>>>> >>>>> test converting letters to variable
+	/*
+	 with "\n"
+	 rule: '?' variable '\n'
+	 input: "?aa@\n"
+	 output: "syntax error"
+	 explanation: aa@ is not a variable
+	*/
+	/*
+	 without "\n"
+	 rule: '?' variable
+	 input: "?aa@"
+	 output: "aa"
+	 explanation: aa is not a variable and ignore the @ because it doesn't know the end of the line
+	*/
 
 	// one letter
 	l = &CalcLex{S: "?a\n"}

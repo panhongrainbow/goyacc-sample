@@ -79,7 +79,7 @@ const CalcEofCode = 1
 const CalcErrCode = 2
 const CalcInitialStackSize = 16
 
-//line calc.y:247
+//line calc.y:312
 /*  start  of  programs  */
 //line yacctab:1
 var CalcExca = [...]int8{
@@ -616,133 +616,133 @@ Calcdefault:
 		}
 	case 17:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:149
+//line calc.y:150
 		{
 			CalcVAL.val = CalcDollar[2].val
 		}
 	case 18:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:151
+//line calc.y:154
 		{
 			CalcVAL.val = CalcDollar[1].val + CalcDollar[3].val
 		}
 	case 19:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:153
+//line calc.y:158
 		{
 			CalcVAL.val = CalcDollar[1].val - CalcDollar[3].val
 		}
 	case 20:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:155
+//line calc.y:162
 		{
 			CalcVAL.val = CalcDollar[1].val * CalcDollar[3].val
 		}
 	case 21:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:157
+//line calc.y:166
 		{
 			CalcVAL.val = CalcDollar[1].val / CalcDollar[3].val
 		}
 	case 22:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:159
+//line calc.y:170
 		{
 			CalcVAL.val = CalcDollar[1].val % CalcDollar[3].val
 		}
 	case 23:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:161
+//line calc.y:174
 		{
 			CalcVAL.val = CalcDollar[1].val & CalcDollar[3].val
 		}
 	case 24:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:163
+//line calc.y:178
 		{
 			CalcVAL.val = CalcDollar[1].val | CalcDollar[3].val
 		}
 	case 25:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:165
+//line calc.y:182
 		{
 			CalcVAL.val = -CalcDollar[2].val
 		}
 	case 26:
 		CalcDollar = CalcS[Calcpt-1 : Calcpt+1]
-//line calc.y:167
+//line calc.y:186
 		{
 			fmt.Println(regs[CalcDollar[1].str])
 		}
 	case 27:
 		CalcDollar = CalcS[Calcpt-5 : Calcpt+1]
-//line calc.y:169
+//line calc.y:190
 		{
 			fmt.Println(arrayMap2[CalcDollar[3].str])
 		}
 	case 28:
 		CalcDollar = CalcS[Calcpt-7 : Calcpt+1]
-//line calc.y:171
+//line calc.y:194
 		{
 			fmt.Println(arrayMap3[CalcDollar[4].str])
 		}
 	case 30:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:177
+//line calc.y:203
 		{
 			CalcVAL.threeDslice = append(CalcVAL.threeDslice, CalcDollar[2].twoDslice)
 		}
 	case 31:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:179
+//line calc.y:207
 		{
 			CalcVAL.threeDslice = append(CalcVAL.threeDslice, CalcDollar[3].twoDslice)
 		}
 	case 32:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:182
+//line calc.y:212
 		{
 			CalcVAL.threeDslice = CalcDollar[1].threeDslice
 		}
 	case 33:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:187
+//line calc.y:220
 		{
 			CalcVAL.twoDslice = append(CalcVAL.twoDslice, CalcDollar[2].slice)
 		}
 	case 34:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:189
+//line calc.y:224
 		{
 			CalcVAL.twoDslice = append(CalcVAL.twoDslice, CalcDollar[3].slice)
 		}
 	case 35:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:192
+//line calc.y:230
 		{
 			CalcVAL.twoDslice = CalcDollar[1].twoDslice
 		}
 	case 36:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:198
+//line calc.y:263
 		{
 			CalcVAL.slice = append(CalcVAL.slice, CalcDollar[2].val)
 		}
 	case 37:
 		CalcDollar = CalcS[Calcpt-3 : Calcpt+1]
-//line calc.y:202
+//line calc.y:267
 		{
 			CalcVAL.slice = append(CalcVAL.slice, CalcDollar[3].val)
 		}
 	case 38:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:208
+//line calc.y:273
 		{
 			CalcVAL.slice = CalcDollar[1].slice
 		}
 	case 39:
 		CalcDollar = CalcS[Calcpt-1 : Calcpt+1]
-//line calc.y:217
+//line calc.y:282
 		{
 			CalcVAL.val = CalcDollar[1].val
 			if CalcDollar[1].val == 0 {
@@ -753,19 +753,19 @@ Calcdefault:
 		}
 	case 40:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:226
+//line calc.y:291
 		{
 			CalcVAL.val = base*CalcDollar[1].val + CalcDollar[2].val
 		}
 	case 41:
 		CalcDollar = CalcS[Calcpt-1 : Calcpt+1]
-//line calc.y:238
+//line calc.y:303
 		{
 			CalcVAL.str = fmt.Sprintf("%c", CalcDollar[1].val)
 		}
 	case 42:
 		CalcDollar = CalcS[Calcpt-2 : Calcpt+1]
-//line calc.y:242
+//line calc.y:307
 		{
 			CalcVAL.str = CalcDollar[1].str + fmt.Sprintf("%c", CalcDollar[2].val)
 		}

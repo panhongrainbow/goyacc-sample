@@ -145,52 +145,92 @@ exprArray : '[' variable ']'
 	 }
 	;
 
-expr	:    '(' expr ')'
-		{ $$  =  $2 }
-	|    expr '+' expr
-		{ $$  =  $1 + $3 }
-	|    expr '-' expr
-		{ $$  =  $1 - $3 }
-	|    expr '*' expr
-		{ $$  =  $1 * $3 }
-	|    expr '/' expr
-		{ $$  =  $1 / $3 }
-	|    expr '%' expr
-		{ $$  =  $1 % $3 }
-	|    expr '&' expr
-		{ $$  =  $1 & $3 }
-	|    expr '|' expr
-		{ $$  =  $1 | $3 }
-	|    '-'  expr        %prec  UMINUS
-		{ $$  = -$2  }
-	|    variable
-		{ fmt.Println(regs[$1]) }
-        |    '[' '[' variable ']' ']'
-                { fmt.Println(arrayMap2[$3]) }
-        |    '[' '[' '[' variable ']' ']' ']'
-                { fmt.Println(arrayMap3[$4]) }
-	|    number
-	;
+expr
+ : '(' expr ')'
+ {
+  $$ = $2
+ }
+ | expr '+' expr
+ {
+  $$ = $1 + $3
+ }
+ | expr '-' expr
+ {
+  $$ = $1 - $3
+ }
+ | expr '*' expr
+ {
+  $$ = $1 * $3
+ }
+ | expr '/' expr
+ {
+  $$ = $1 / $3
+ }
+ | expr '%' expr
+ {
+  $$ = $1 % $3
+ }
+ | expr '&' expr
+ {
+  $$ = $1 & $3
+ }
+ | expr '|' expr
+ {
+  $$ = $1 | $3
+ }
+ | '-' expr %prec UMINUS
+ {
+  $$ = -$2
+ }
+ | variable
+ {
+  fmt.Println(regs[$1])
+ }
+ | '[' '[' variable ']' ']'
+ {
+  fmt.Println(arrayMap2[$3])
+ }
+ | '[' '[' '[' variable ']' ']' ']'
+ {
+  fmt.Println(arrayMap3[$4])
+ }
+ | number
+ ;
 
 // array : (three dimensionals)
-threeDarray2 : '[' twoDarray
-	 { $$ = append($$, $2) }
-	| threeDarray2 ',' twoDarray
-	 { $$ = append($$, $3) }
-	;
+threeDarray2
+ : '[' twoDarray
+ {
+  $$ = append($$, $2)
+ }
+ | threeDarray2 ',' twoDarray
+ {
+  $$ = append($$, $3)
+ }
+ ;
 threeDarray : threeDarray2 ']'
-	 { $$ = $1 }
-	;
+ {
+  $$ = $1
+ }
+ ;
 
 // array : (two dimensionals)
-twoDarray2 : '[' array
-	 { $$ = append($$, $2) }
-	| twoDarray2 ',' array
-	 { $$ = append($$, $3) }
-	;
-twoDarray : twoDarray2 ']'
-	 { $$ = $1 }
-	;
+twoDarray2
+ : '[' array
+ {
+  $$ = append($$, $2)
+ }
+ | twoDarray2 ',' array
+ {
+  $$ = append($$, $3)
+ }
+ ;
+twoDarray
+ : twoDarray2 ']'
+ {
+  $$ = $1
+ }
+ ;
 
 // array : (one dimensional)
 /*
