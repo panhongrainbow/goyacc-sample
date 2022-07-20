@@ -247,30 +247,7 @@ twoDarray
  ;
 
 // array : (one dimensional)
-/*
- What if I do not have array2 ?
- There are two pattens
-
- pattern 1
-  [1,2,3]
-  array, 2, array
-  array, array
-
- pattern 2
-  [1,2,3]
-  array, 2, 3 ]
-  array, 3 ]
-  array, ]
-  array
-
- use array2 to aovoid two patterns
-
- [1,2,3]
-  array2 2, 3 ]
-  array2 3 ]
-  array2 ]
-  array
-*/
+// prefer to shift over reduce
 
 array2
  : '[' /* empty */
