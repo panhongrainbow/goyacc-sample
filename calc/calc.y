@@ -110,45 +110,54 @@ unittest
  }*/
  ;
 
-stat	:    expr
-	|    variable '=' expr
-		{
-			regs[$1] = $3
-		}
-	|    exprArray
-	|    variable '=' exprArray
-        	{
-        		arrayMap[$1] = $3
-        	}
-        |    variable '=' twoDarray
-                {
-                	arrayMap2[$1] = $3
-                }
-        |    variable '=' threeDarray
-                {
-                	arrayMap3[$1] = $3
-                }
-	;
+stat
+ : expr
+ | variable '=' expr
+ {
+  regs[$1] = $3
+ }
+ | exprArray
+{
+  fmt.Println($1)
+ }
+ | variable '=' exprArray
+ {
+  arrayMap[$1] = $3
+ }
+ | variable '=' twoDarray
+ {
+  arrayMap2[$1] = $3
+ }
+ | variable '=' threeDarray
+ {
+  arrayMap3[$1] = $3
+ }
+ ;
 
-exprArray : '[' variable ']'
-	 { fmt.Println(arrayMap[$2]) }
-	| array
-         { $$ = $1 }
-	| exprArray '+' '[' variable ']'
-	 {
-	  $$=make([]int, len($1))
-	  for i := 0; i < len($1); i++ {
-	    $$[i] = $1[i]+arrayMap[$4][i]
-	  }
-	 }
-	| exprArray '+' array
-	 {
-	  $$=make([]int, len($1))
-	  for i := 0; i < len($1); i++ {
-	    $$[i] = $1[i]+$3[i]
-	  }
-	 }
-	;
+exprArray
+ : '[' variable ']'
+ {
+  $$ = arrayMap[$2]
+ }
+ | array
+ {
+  $$ = $1
+ }
+ | exprArray '+' '[' variable ']'
+ {
+  $$=make([]int, len($1))
+  for i := 0; i < len($1); i++ {
+  $$[i] = $1[i]+arrayMap[$4][i]
+  }
+ }
+ | exprArray '+' array
+ {
+  $$=make([]int, len($1))
+  for i := 0; i < len($1); i++ {
+  $$[i] = $1[i]+$3[i]
+  }
+ }
+ ;
 
 expr
  : '(' expr ')'

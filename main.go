@@ -2,13 +2,15 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"goyacc-sample/calc"
+	"os"
 )
 
 func main() {
 
-	calc.CalcParse(&calc.CalcLex{S: "aa=1\n"})
-	/*fi := bufio.NewReader(os.NewFile(0, "stdin"))
+	// calc.CalcParse(&calc.CalcLex{S: "aa=1\n"})
+	fi := bufio.NewReader(os.NewFile(0, "stdin"))
 
 	for {
 		var eqn string
@@ -16,11 +18,11 @@ func main() {
 
 		fmt.Printf("equation: ")
 		if eqn, ok = readline(fi); ok {
-			CalcParse(&CalcLex{s: eqn})
+			calc.CalcParse(&calc.CalcLex{S: eqn})
 		} else {
 			break
 		}
-	}*/
+	}
 }
 
 func readline(fi *bufio.Reader) (string, bool) {
