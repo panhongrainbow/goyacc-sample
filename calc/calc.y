@@ -51,9 +51,9 @@ type Test struct {
 // really a field name in the above union struct
 %type <str> variable
 %type <val> expr number
-%type <slice> exprArray array array2
-%type <twoDslice> twoDarray twoDarray2
-%type <threeDslice> threeDarray threeDarray2
+%type <slice> exprArray array
+%type <twoDslice> twoDarray
+%type <threeDslice> threeDarray
 %type <test> unittest
 
 // same for terminals
@@ -67,29 +67,28 @@ type Test struct {
 %left '\n'
 %right '['
 %left ']'
-%right UMINUS      /*  supplies  precedence  for  unary  minus  */
+%left ','
+%left THIRDCOMMA
+%left SECONDCOMMA
+%left FIRSTCOMMA
+%right UMINUS /* supplies precedence for unary minus */
 %right '?'
 
 %%
 
-list	: /* empty */
-	| stat '\n'
-	 {}
-        | unittest
-       	 {
-       	  setResult(Calclex, $1)
-       	 }
-	;
+list : /* empty */
+ | stat '\n'
+ {}
+ | unittest
+ {
+  setResult(Calclex, $1)
+ }
+ ;
 
 unittest
  : '?' array '\n'
  {
   $$.node = "array"
-  $$.value = append($$.value, $2)
- }
- | '?' array2 '\n'
- {
-  $$.node = "array2"
   $$.value = append($$.value, $2)
  }
  | '?' number '\n'
@@ -212,35 +211,32 @@ expr
  ;
 
 // array : (three dimensionals)
-threeDarray2
+threeDarray
  : '[' twoDarray
  {
   $$ = append($$, $2)
  }
- | threeDarray2 ',' twoDarray
+ | threeDarray ',' twoDarray %prec THIRDCOMMA
  {
   $$ = append($$, $3)
  }
- ;
-threeDarray : threeDarray2 ']'
+ | threeDarray ']'
  {
   $$ = $1
  }
  ;
 
 // array : (two dimensionals)
-twoDarray2
+twoDarray
  : '[' array
  {
   $$ = append($$, $2)
  }
- | twoDarray2 ',' array
+ | twoDarray ',' array %prec SECONDCOMMA
  {
   $$ = append($$, $3)
  }
- ;
-twoDarray
- : twoDarray2 ']'
+ | twoDarray ']'
  {
   $$ = $1
  }
@@ -248,23 +244,20 @@ twoDarray
 
 // array : (one dimensional)
 // prefer to shift over reduce
-
-array2
- : '[' /* empty */
- {
-  $$=[]int{}
- }
+array
+ : '[' ']'
+  {
+   $$ = []int{}
+  }
  | '[' number
  {
   $$ = append($$, $2)
  }
- | array2 ',' number
+ | array ',' number %prec FIRSTCOMMA
  {
   $$ = append($$, $3)
  }
- ;
-array
- : array2 ']'
+ | array ']'
  {
   $$ = $1
  }
