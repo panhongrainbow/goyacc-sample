@@ -1,7 +1,6 @@
 package calc
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
@@ -9,7 +8,7 @@ import (
 func Test_Calc(t *testing.T) {
 	l := &CalcLex{S: "aa=1\n"}
 	CalcParse(l)
-	fmt.Println(l.result)
+	// fmt.Println(l.result)
 
 	// >>>>> >>>>> test converting letters to variable
 	/*
@@ -86,13 +85,13 @@ func Test_Calc(t *testing.T) {
 
 	// >>>>> >>>>> test converting numbers to a sub array (array2)
 
-	l = &CalcLex{S: "?[1\n"}
+	l = &CalcLex{S: "?[1]\n"}
 	CalcParse(l)
 	require.Equal(t, l.result.(Test).node, "array")
 	require.Equal(t, l.result.(Test).value[0], []int{1})
 	require.Equal(t, l.err, nil)
 
-	l = &CalcLex{S: "?[1,2\n"}
+	l = &CalcLex{S: "?[1,2]\n"}
 	CalcParse(l)
 	require.Equal(t, l.result.(Test).node, "array")
 	require.Equal(t, l.result.(Test).value[0], []int{1, 2})
@@ -102,8 +101,8 @@ func Test_Calc(t *testing.T) {
 
 	l = &CalcLex{S: "?[]\n"}
 	CalcParse(l)
-	/*require.Equal(t, l.result.(Test).node, "array")
-	require.Equal(t, l.result.(Test).value[0], []int{})*/
+	require.Equal(t, l.result.(Test).node, "array")
+	require.Equal(t, l.result.(Test).value[0], []int{})
 	require.Equal(t, l.err, nil)
 
 	return

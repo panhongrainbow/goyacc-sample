@@ -38,13 +38,13 @@ type Test struct {
 // fields inside this union end up as the fields in a structure known
 // as ${PREFIX}SymType, of which a reference is passed to the lexer.
 %union{
-	val int
-	str string
-	slice []int
-	twoDslice [][]int
-	threeDslice [][][]int
-	// iface []interface{}
-	test Test
+ val int
+ str string
+ slice []int
+ twoDslice [][]int
+ threeDslice [][][]int
+ // iface []interface{}
+ test Test
 }
 
 // any non-terminal which returns a value needs a type, which is
@@ -249,17 +249,22 @@ array
   {
    $$ = []int{}
   }
- | '[' number
+ | '[' number ']'
  {
-  $$ = append($$, $2)
+  $$ = []int{$2}
+ }
+ | number ',' number %prec FIRSTCOMMA
+ {
+  $$ = append($$, $1, $3)
  }
  | array ',' number %prec FIRSTCOMMA
  {
+  $$ = $1
   $$ = append($$, $3)
  }
- | array ']'
+ | '[' array ']'
  {
-  $$ = $1
+  $$ = $2
  }
  ;
 
