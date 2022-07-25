@@ -1,15 +1,16 @@
 package calc
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
 
 func Test_Calc(t *testing.T) {
-	l := &CalcLex{S: "aa=1\n"}
-	CalcParse(l)
-	fmt.Println(l.result)
+	l2 := &CalcLex2{input: bytes.NewBuffer([]byte("aa=1\n"))}
+	CalcParse2(l2)
+	fmt.Println(l2.result)
 
 	// >>>>> >>>>> test converting letters to variable
 	/*
@@ -28,7 +29,7 @@ func Test_Calc(t *testing.T) {
 	*/
 
 	// one letter
-	l = &CalcLex{S: "?a\n"}
+	l := &CalcLex{S: "?a\n"}
 	CalcParse(l)
 	require.Equal(t, l.result.(Test).node, "variable")
 	require.Equal(t, l.result.(Test).value[0], "a")

@@ -1,6 +1,7 @@
 package calc
 
 import (
+	"bytes"
 	"errors"
 	"unicode"
 )
@@ -39,4 +40,42 @@ func (l *CalcLex) Error(s string) {
 
 func setResult(lexer CalcLexer, value interface{}) {
 	lexer.(*CalcLex).result = value
+}
+
+// >>>>> CalcLex2
+
+type CalcLex2 struct {
+	input  *bytes.Buffer
+	result interface{}
+	err    error
+}
+
+func (l *CalcLex2) Lex(lval *CalcSymType) int {
+	for {
+		r, _, err := l.input.ReadRune()
+		if err != nil {
+			return 0
+		}
+		switch {
+		case unicode.IsSpace(r):
+			continue
+		case unicode.IsDigit(r):
+			lval.val = int(r) - '0'
+			return DIGIT
+		case unicode.IsLower(r):
+			lval.val = int(r)
+			return LETTER
+		default:
+			return int(r)
+		}
+	}
+}
+
+func (l *CalcLex2) Error(s string) {
+	// fmt.Printf("syntax error: %s\n", s)
+	l.err = errors.New("syntax error")
+}
+
+func CalcParse2(Calclex2 CalcLexer) int {
+	return CalcNewParser().Parse(Calclex2)
 }
