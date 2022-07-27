@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	// calc.CalcParse(&calc.CalcLex{S: "aa=1\n"})
 	fi := bufio.NewReader(os.NewFile(0, "stdin"))
 

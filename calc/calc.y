@@ -38,22 +38,23 @@ type Test struct {
 // fields inside this union end up as the fields in a structure known
 // as ${PREFIX}SymType, of which a reference is passed to the lexer.
 %union{
-	val int
-	str string
-	slice []int
-	twoDslice [][]int
-	threeDslice [][][]int
-	// iface []interface{}
-	test Test
+ val int
+ str string
+ slice []int
+ twoDslice [][]int
+ threeDslice [][][]int
+ iface interface{}
+ test Test
 }
 
 // any non-terminal which returns a value needs a type, which is
 // really a field name in the above union struct
 %type <str> variable
 %type <val> expr number
-%type <slice> exprArray array
+%type <slice> array
 %type <twoDslice> twoDarray
 %type <threeDslice> threeDarray
+%type <iface> exprArray
 %type <test> unittest
 
 // same for terminals
@@ -111,50 +112,63 @@ unittest
 
 stat
  : expr
+ {
+  fmt.Println($1)
+ }
+ | exprArray
+ {
+  fmt.Println($1)
+ }
  | variable '=' expr
  {
   regs[$1] = $3
  }
- | exprArray
-{
-  fmt.Println($1)
- }
  | variable '=' exprArray
  {
-  arrayMap[$1] = $3
- }
- | variable '=' twoDarray
- {
-  arrayMap2[$1] = $3
- }
- | variable '=' threeDarray
- {
-  arrayMap3[$1] = $3
+  arrayMap[$1] = $3.([]int)
  }
  ;
 
 exprArray
- : '[' variable ']'
+ : exprArray '+' '[' variable ']'
+ {
+  tmp := make([]int, len($1.([]int)))
+  for i := 0; i < len($1.([]int)); i++ {
+   tmp[i] = $1.([]int)[i]+arrayMap[$4][i]
+  }
+  $$ = tmp
+ }
+ | exprArray '+' array
+ {
+  tmp := make([]int, len($1.([]int)))
+  for i := 0; i < len($1.([]int)); i++ {
+   tmp[i] = $1.([]int)[i]+$3[i]
+  }
+  $$ = tmp
+ }
+ | '[' variable ']'
  {
   $$ = arrayMap[$2]
+ }
+ | '[' '[' variable ']' ']'
+ {
+  $$ = arrayMap2[$3]
+ }
+ | '[' '[' '[' variable ']' ']' ']'
+ {
+  $$ = arrayMap3[$4]
  }
  | array
  {
   $$ = $1
  }
- | exprArray '+' '[' variable ']'
+ | twoDarray
  {
-  $$=make([]int, len($1))
-  for i := 0; i < len($1); i++ {
-  $$[i] = $1[i]+arrayMap[$4][i]
-  }
+  $$ = $1
  }
- | exprArray '+' array
+ | threeDarray
  {
-  $$=make([]int, len($1))
-  for i := 0; i < len($1); i++ {
-  $$[i] = $1[i]+$3[i]
-  }
+  $$ = $1
  }
  ;
 
@@ -197,17 +211,12 @@ expr
  }
  | variable
  {
-  fmt.Println(regs[$1])
- }
- | '[' '[' variable ']' ']'
- {
-  fmt.Println(arrayMap2[$3])
- }
- | '[' '[' '[' variable ']' ']' ']'
- {
-  fmt.Println(arrayMap3[$4])
+  $$ = regs[$1]
  }
  | number
+{
+  $$ = $1
+ }
  ;
 
 // array : (three dimensionals)
