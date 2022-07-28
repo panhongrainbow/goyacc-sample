@@ -1,16 +1,14 @@
 package calc
 
 import (
-	"bytes"
-	"fmt"
 	"github.com/stretchr/testify/require"
 	"testing"
 )
 
 func Test_Calc(t *testing.T) {
-	l2 := &CalcLex2{input: bytes.NewBuffer([]byte("aa=1\n"))}
+	/*l2 := &CalcLex2{input: bytes.NewBuffer([]byte("aa=1\n"))}
 	CalcParse2(l2)
-	fmt.Println(l2.result)
+	fmt.Println(l2.result)*/
 
 	// >>>>> >>>>> test converting letters to variable
 	/*

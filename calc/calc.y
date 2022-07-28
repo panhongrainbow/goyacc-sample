@@ -12,17 +12,8 @@ import (
 	"fmt"
 )
 
-// a number
-var regs = make(map[string]int, 26)
-
-// one dimensional
-var arrayMap = make(map[string][]int)
-
-// two dimensionals
-var arrayMap2 = make(map[string][][]int)
-
-// three dimensionals
-var arrayMap3 = make(map[string][][][]int)
+// keep variables
+var regs = make(map[string]interface{}, 26)
 
 // calculate
 var base int
@@ -50,11 +41,11 @@ type Test struct {
 // any non-terminal which returns a value needs a type, which is
 // really a field name in the above union struct
 %type <str> variable
-%type <val> expr number
+%type <val> number exprNumber
 %type <slice> array
 %type <twoDslice> twoDarray
 %type <threeDslice> threeDarray
-%type <iface> exprArray
+%type <iface> expr exprArray exprVariable
 %type <test> unittest
 
 // same for terminals
@@ -76,13 +67,28 @@ type Test struct {
 %right '?'
 
 %%
-
-list : /* empty */
- | stat '\n'
- {}
+root
+ : /* empty */
+ | root '\n'
+ | equal
+ | print
  | unittest
  {
   setResult(Calclex, $1)
+ }
+ ;
+
+equal
+ : variable '=' expr
+ {
+  regs[$1] = $3
+ }
+ ;
+
+print
+ : expr
+ {
+  fmt.Println($1)
  }
  ;
 
@@ -102,39 +108,45 @@ unittest
   $$.node = "variable"
   $$.value = append($$.value, $2)
  }
- /* conflicts because of rule, "variable : LETTER"
- | '?' LETTER '\n'
- {
-  $$.node = "LETTER"
-  $$.value = append($$.value, $2)
- }*/
  ;
 
-stat
- : expr
+expr
+ : exprNumber
  {
-  fmt.Println($1)
+  setResult(Calclex, $1)
+  $$ = $1
  }
  | exprArray
  {
-  fmt.Println($1)
+  setResult(Calclex, $1)
+  $$ = $1
  }
- | variable '=' expr
+ | exprVariable
  {
-  regs[$1] = $3
+  setResult(Calclex, $1)
+  $$ = $1
  }
- | variable '=' exprArray
+ // adapt others
+ | twoDarray
  {
-  arrayMap[$1] = $3.([]int)
+  $$ = $1
+ }
+ | threeDarray
+ {
+  $$ = $1
  }
  ;
 
 exprArray
- : exprArray '+' '[' variable ']'
+ : array
+ {
+  $$ = $1
+ }
+ | exprArray '+' '[' variable ']'
  {
   tmp := make([]int, len($1.([]int)))
   for i := 0; i < len($1.([]int)); i++ {
-   tmp[i] = $1.([]int)[i]+arrayMap[$4][i]
+   tmp[i] = $1.([]int)[i]+regs[$4].([]int)[i]
   }
   $$ = tmp
  }
@@ -146,76 +158,55 @@ exprArray
   }
   $$ = tmp
  }
- | '[' variable ']'
- {
-  $$ = arrayMap[$2]
- }
- | '[' '[' variable ']' ']'
- {
-  $$ = arrayMap2[$3]
- }
- | '[' '[' '[' variable ']' ']' ']'
- {
-  $$ = arrayMap3[$4]
- }
- | array
- {
-  $$ = $1
- }
- | twoDarray
- {
-  $$ = $1
- }
- | threeDarray
- {
-  $$ = $1
- }
  ;
 
-expr
- : '(' expr ')'
+exprNumber
+ : number
+ {
+  $$ = $1
+ }
+ | '(' exprNumber ')'
  {
   $$ = $2
  }
- | expr '+' expr
+ | exprNumber '+' exprNumber
  {
   $$ = $1 + $3
  }
- | expr '-' expr
+ | exprNumber '-' exprNumber
  {
   $$ = $1 - $3
  }
- | expr '*' expr
+ | exprNumber '*' exprNumber
  {
   $$ = $1 * $3
  }
- | expr '/' expr
+ | exprNumber '/' exprNumber
  {
   $$ = $1 / $3
  }
- | expr '%' expr
+ | exprNumber '%' exprNumber
  {
   $$ = $1 % $3
  }
- | expr '&' expr
+ | exprNumber '&' exprNumber
  {
   $$ = $1 & $3
  }
- | expr '|' expr
+ | exprNumber '|' exprNumber
  {
   $$ = $1 | $3
  }
- | '-' expr %prec UMINUS
+ | '-' exprNumber %prec UMINUS
  {
   $$ = -$2
  }
- | variable
+ ;
+
+exprVariable
+ : variable
  {
   $$ = regs[$1]
- }
- | number
-{
-  $$ = $1
  }
  ;
 
@@ -304,6 +295,6 @@ variable
  {
   $$ = $1 + fmt.Sprintf("%c", $2)
  }
-;
+ ;
 
 %%      /*  start  of  programs  */
