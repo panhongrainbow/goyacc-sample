@@ -50,6 +50,7 @@ type Test struct {
 
 // same for terminals
 %token <val> DIGIT LETTER
+%type <str> ask
 
 %left '|'
 %left '&'
@@ -93,17 +94,17 @@ print
  ;
 
 unittest
- : '?' array '\n'
+ : ask array '?'
  {
   $$.node = "array"
   $$.value = append($$.value, $2)
  }
- | '?' number '\n'
-  {
-   $$.node = "number"
-   $$.value = append($$.value, $2)
-  }
- | '?' variable '\n'
+ | ask number '?'
+ {
+  $$.node = "number"
+  $$.value = append($$.value, $2)
+ }
+ | ask variable '?'
  {
   $$.node = "variable"
   $$.value = append($$.value, $2)
@@ -296,5 +297,8 @@ variable
   $$ = $1 + fmt.Sprintf("%c", $2)
  }
  ;
+
+// keyword
+ask: 'A' 'S' 'K' {};
 
 %%      /*  start  of  programs  */
