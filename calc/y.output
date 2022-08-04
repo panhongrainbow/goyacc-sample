@@ -727,7 +727,7 @@ state 72
 	.  reduce 17 (src line 146)
 
 
-27 terminals, 15 nonterminals
+28 terminals, 15 nonterminals
 45 grammar rules, 73/16000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
 64 working sets used
@@ -738,4 +738,4 @@ memory: parser 53/240000
 17 entries saved by goto default
 Optimizer space used: output 124/240000
 124 table entries, 0 zero
-maximum spread: 27, maximum offset: 63
+maximum spread: 28, maximum offset: 63

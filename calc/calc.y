@@ -49,7 +49,7 @@ type Test struct {
 %type <test> unittest
 
 // same for terminals
-%token <val> DIGIT LETTER
+%token <val> DIGIT LETTER TokenASK
 %type <str> ask
 
 %left '|'
